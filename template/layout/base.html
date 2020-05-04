@@ -29,7 +29,7 @@
                             <span class="sr-only">Toggle navigation</span>
                             <span class="icon-bar"></span> 
                             <span class="icon-bar"></span> 
-                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>              
                         </button> 
                         <a href="/" class="navbar-brand">Nodejs</a>
                     </div> 
@@ -39,6 +39,7 @@
                             {{ link( '/' , "Home" , req_path ) }}
                             {{ link( '/admin/products' , "ADMIN" , req_path ) }}
                             {{ link( '/chat' , "CHAT" , req_path ) }}
+                            {{ link( '/accounts/information' , "User_Information" , req_path ) }}
                             {% if isLogin %}
                                 <li><a href="/accounts/logout" onclick="return confirm('로그아웃 하시겠습니까?')">LOGOUT</a></li>
                             {% else %}

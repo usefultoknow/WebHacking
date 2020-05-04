@@ -12,7 +12,9 @@ const express = require('express'),
       loginRequired = require('./helpers/loginRequired'),
       home = require('./routes/home'),
       chat = require('./routes/chat'),
-      request = require('request');
+      request = require('request'),
+      controllers = require('./controllers/products/index');
+     
       
       
       
@@ -115,6 +117,7 @@ app.use((req,res,next)=>{
 
 
 
+
 //get - 웹 브라우저에서 url을 입력 시 응답하는 부분
 app.use('/admin',admin);
 
@@ -132,6 +135,11 @@ app.use('/chat',chat);
 app.use('/auth', auth);
 
 
+//상세보기 페이지
+app.use('/products',controllers);
+
+
+
 
 //sync() 메서드를 호출하여 models 폴더에서 정의된 모델들을 바탕으로 실제로 Model을 등록
 
@@ -144,7 +152,7 @@ models.sequelize.sync().then( () =>{
 
 
 //테이블 생성시 싱크해주기 위해서 한번 실행
-// return models.sequelize.sync();
+//  return models.sequelize.sync();
 
 
 

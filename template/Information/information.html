@@ -1,0 +1,37 @@
+{% set title = "유저 정보 페이지" %}
+{% extends "layout/base.html" %}
+
+{% block content -%}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+           아이디 :  {{ Username }}
+        </div>
+    </div>
+        <div class="panel-body">
+            <div style="padding-bottom: 10px">
+                이름 : {{ Displayname}}
+            </div>
+        </div>
+        <div class="panel-body">
+            <div style="padding-bottom: 10px">
+                성별 : {{ gender}}
+            </div>
+        </div>
+        <div class="panel-body">
+            <div style="padding-bottom: 10px">
+                생년월일 : {{ Year }}년 {{ Month }}월 {{ Day }}일 
+         </div>
+
+
+
+            <hr />
+           
+<!--
+        </div>
+    </div>
+
+    <a href="/admin/products/edit/{{ product.id }}" class="btn btn-primary">수정</a>-->
+
+
+
+{% endblock %}

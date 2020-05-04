@@ -11,7 +11,8 @@ module.exports = function(sequelize, DataTypes){
                 validate : {
                     len : [0, 50]
                 },
-                allowNull : false
+                allowNull : false,
+               
             },
             
             password : { 
@@ -20,6 +21,38 @@ module.exports = function(sequelize, DataTypes){
                     len : [3, 100]
                 } ,
                 allowNull : false
+            },
+            gender : { 
+                type: DataTypes.STRING,
+                validate : {
+                    len : [0, 50]
+                },
+                allowNull : false,
+               
+            },
+            Year : { 
+                type: DataTypes.STRING,
+                validate : {
+                    len : [0, 50]
+                },
+                allowNull : false,
+               
+            },
+            Month : { 
+                type: DataTypes.STRING,
+                validate : {
+                    len : [0, 50]
+                },
+                allowNull : false,
+               
+            },
+            Day : { 
+                type: DataTypes.STRING,
+                validate : {
+                    len : [0, 50]
+                },
+                allowNull : false,
+               
             },
             
             displayname : { type: DataTypes.STRING }

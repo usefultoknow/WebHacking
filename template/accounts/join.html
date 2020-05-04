@@ -23,6 +23,31 @@
                         <div class="form-group">
                             <input class="form-control" placeholder="이름" name="displayname" type="text" value="" required>
                         </div>
+                        <div class="form-group">
+                        성별
+                            <select name="gender" class="form-control" required>
+                                <option value="남자">남자</option>
+                                <option value="여자">여자</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                        생년월일
+                            <select name="Year" class="form-control" required>
+                                {% for i in range(1950,2021) -%}
+                                <option>{{i}}</option>
+                                {%- endfor %}
+                            </select>
+                            <select name="Month" class="form-control" required>
+                                 {% for i in range(1,13) -%}
+                                <option>{{i}}</option>
+                                {%- endfor %}
+                            </select>
+                            <select name="Day" class="form-control" required>
+                                 {% for i in range(1,32) -%}
+                                <option>{{i}}</option>
+                                {%- endfor %}
+                            </select>
+                        </div>
                         <!-- Change this to a button or input when using this as a form -->
                         <input type="submit" class="btn btn-lg btn-success btn-block" value="가입하기">
                         <div style="margin-top: 10px">
