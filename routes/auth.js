@@ -68,7 +68,7 @@ passport.use(new FacebookStrategy({
     }
 ));
 
-// http://localhost:3000/auth/facebook 접근시 facebook으로 넘길 url 작성해줌
+// https://localhost:3000/auth/facebook 접근시 facebook으로 넘길 url 작성해줌
 router.get('/facebook', passport.authenticate('facebook', { scope: 'email'}) );
 
 

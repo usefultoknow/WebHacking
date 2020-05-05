@@ -29,7 +29,8 @@
                             <span class="sr-only">Toggle navigation</span>
                             <span class="icon-bar"></span> 
                             <span class="icon-bar"></span> 
-                            <span class="icon-bar"></span>              
+                            <span class="icon-bar"></span>
+
                         </button> 
                         <a href="/" class="navbar-brand">Nodejs</a>
                     </div> 
@@ -40,11 +41,12 @@
                             {{ link( '/admin/products' , "ADMIN" , req_path ) }}
                             {{ link( '/chat' , "CHAT" , req_path ) }}
                             {{ link( '/accounts/information' , "User_Information" , req_path ) }}
+
                             {% if isLogin %}
-                                <li><a href="/accounts/logout" onclick="return confirm('로그아웃 하시겠습니까?')">LOGOUT</a></li>
+                             <li><a href="/accounts/logout" onclick="return confirm('로그아웃 하시겠습니까?')">LOGOUT</a></li>
                             {% else %}
-                                <li><a href="/accounts/join">JOIN</a></li> 
-                                <li><a href="/accounts/login">LOGIN</a></li>  
+                            {{ link( '/accounts/join' , "JOIN" , req_path ) }}
+                            {{ link( '/accounts/login' , "LOGIN" , req_path ) }}
                             {% endif %}
                         </ul> 
                     </div> 

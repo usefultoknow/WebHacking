@@ -1,7 +1,8 @@
 const express = require('express'),
       app = express(),
+      https = require('https'),
       httpport = 3000, //test port 추후 80이용
-      httpsport = 443, //https port
+      httpsport = 5000, //https port
       nunjucks = require('nunjucks'),
       logger = require('morgan'), //로그 미들웨어
       bodyParser = require('body-parser'), 
@@ -11,9 +12,15 @@ const express = require('express'),
       auth = require('./routes/auth'),
       loginRequired = require('./helpers/loginRequired'),
       home = require('./routes/home'),
+      fs =require('fs'),
       chat = require('./routes/chat'),
       request = require('request'),
-      controllers = require('./controllers/products/index');
+      controllers = require('./controllers/index');
+
+const options = {
+    key : fs.readFileSync('./SSLconfig/private.key'),
+    cert:fs.readFileSync('./SSLconfig/server.crt')
+};
      
       
       
@@ -43,8 +50,6 @@ let admin = require('./routes/admin.js');
 
 
 
-const fs = require('fs');
-
 //미들웨어 셋팅
 app.use(logger('dev'));
 app.use(logger('combined',{stream:fs.WriteStream('./serverlog.log')}));
@@ -53,13 +58,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/uploads', express.static('uploads'));
 app.locals.req_path = request.path;
-
-
-
-
-
-
-
 
 
 

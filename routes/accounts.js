@@ -30,7 +30,7 @@ passport.use(new LocalStrategy({ //local 전략을 세움
 
             // 유저에서 조회 되면 세션등록쪽으로 데이터를 넘김
         } else {
-            return done(null, user);
+            return done(null, user );
         }
     }
 ));
@@ -70,18 +70,6 @@ router.get('/join',(_,res)=>{
 
 
 
-//회원정보 넘겨주기
-router.get('/information',loginRequired,async(req,res)=>{
-    const Username = req.user.username,
-    Displayname = req.user.displayname,
-    gender = req.user.gender,
-    Year = req.user.Year,
-    Month = req.user.Month,
-    Day = req.user.Day;
-
-    res.render('Information/information.html',{Username,Displayname,gender,Year,Month,Day});
-});
-
 
 
 
@@ -91,16 +79,30 @@ router.get('/login', ( req , res) => {
 });
 
 
-router.post('/login' , 
-    passport.authenticate('local', {       //아이디,패스워드 전략을 사용한다.
-        failureRedirect: '/accounts/login',
-        failureFlash: true
-    }),
-    ( _ , res ) => {
-        res.send('<script>alert("로그인 성공");\
-        location.href="/";</script>');
-    }
-); 
+
+
+//로그인 성공,실패 여부
+router.post('/login', function (req, res, next) {
+    passport.authenticate('local', function (err, user, message) {
+        if (!user) {
+            return req.session.save(function () {
+                req.flash("error", message.message);
+                return res.redirect('/accounts/login');
+            })
+        }
+        req.login(user, function () {
+            return req.session.save(function () {
+                return res.redirect('/');
+            });
+        });
+    })(req, res, next)
+});
+
+
+
+
+
+
 
 
 //성공 페이지
@@ -113,9 +115,16 @@ router.get('/success',(req,res)=>{
 
 
 //로그아웃
-router.get('/logout',(req,res)=>{
+router.get('/logout',async(req,res)=>{
+    try{
     req.logout();
-    res.redirect('/accounts/login');
+    req.session.save(()=>{
+        res.redirect('/accounts/login');
+    });
+    }
+    catch(err){
+        console.log(err);
+    }
 });
 
 
@@ -137,6 +146,17 @@ router.post('/join',async(req,res)=>{
 });
 
 
+//회원정보 넘겨주기
+router.get('/information',loginRequired,async(req,res)=>{
+    const Username = req.user.username,
+    Displayname = req.user.displayname,
+    gender = req.user.gender,
+    Year = req.user.Year,
+    Month = req.user.Month,
+    Day = req.user.Day;
+
+    res.render('Information/information.html',{Username,Displayname,gender,Year,Month,Day});
+});
 
 
 
