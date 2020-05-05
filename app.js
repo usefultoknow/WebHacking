@@ -15,7 +15,8 @@ const express = require('express'),
       fs =require('fs'),
       chat = require('./routes/chat'),
       request = require('request'),
-      controllers = require('./controllers/index');
+      controllers = require('./controllers/index'),
+      missing = require('./routes/password');
 
 const options = {
     key : fs.readFileSync('./SSLconfig/private.key'),
@@ -137,7 +138,8 @@ app.use('/auth', auth);
 app.use('/products',controllers);
 
 
-
+//비밀번호 찾기
+app.use('/missing',missing);
 
 //sync() 메서드를 호출하여 models 폴더에서 정의된 모델들을 바탕으로 실제로 Model을 등록
 
