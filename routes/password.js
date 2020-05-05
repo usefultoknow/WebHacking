@@ -62,15 +62,16 @@ router.get('/password/change',csrfProtection,async(req,res)=>{
 
 router.post('/password/change',async(req,res)=>{
     try{
-
+        
         const ConfirmId = req.body.username;
         const Password = passwordHash(req.body.password);
-        console.log(Password,'#######################');
         await models.User.update(Password,{
             where : {
                 username : ConfirmId
             }
-        });
+        },{SET : {
+            password :Password
+        }});
     }
     catch(err){
         console.log(err);

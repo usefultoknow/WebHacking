@@ -10,6 +10,12 @@ module.exports = (sequelize, DataTypes) => {
       thumbnail :{
         type: DataTypes.STRING
       },
+      
+      writer :{
+        type: DataTypes.STRING,
+        allowNull : false,
+      },
+      
       price: {
         field:"price",
         type: DataTypes.INTEGER.UNSIGNED,

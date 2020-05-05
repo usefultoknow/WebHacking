@@ -68,8 +68,8 @@ $(document).ready(function() {
         var $passwordInput = $('#join_form input[name=password]');
         var $passwordInput2 = $('#join_form input[name=password2]');
 
-        if($passwordInput.val().length < 4){
-            alert("4글자 이상 작성해주세요");
+        if($passwordInput.val().length < 8){
+            alert("8글자 이상 작성해주세요");
             return false;
         }
         

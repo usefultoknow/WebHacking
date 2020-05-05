@@ -55,6 +55,7 @@ router.get('/products',async(_,res)=>{
 */
 
 
+ 
 router.get('/products', paginate.middleware(3, 50),loginRequired, async (req, res) => { //middlware(3,50) : [page당 게시물 수],[page당 최대 게시물 수 제한]
     try {
         const [products, totalCount] = await Promise.all([
@@ -103,17 +104,52 @@ router.get('/products/write', csrfProtection,loginRequired, function (req, res) 
     res.render('admin/form.html', { csrfToken: req.csrfToken() });
 });
 
-//일어나서 확인하쟈ㅏ
+
+
+//일어나서 확인하쟈ㅏ, 작성자만 삭제하기 구현완성시켜 술쟁아 + beerBest
 router.post('/products/write', upload.single('thumbnail'), csrfProtection,loginRequired, async (req, res) => {
 
-    console.log(req.file);
-    req.body.thumbnail = (req.file) ? req.file.filename : "";
-    await models.product.create(req.body);
-    res.redirect('/admin/products');
+    try{
+        var writer = req.user.displayname;
 
+        req.body.thumbnail = (req.file) ? req.file.filename : "";
+        await models.product.create(req.body);
+        await models.product.update(req.body,{
+            where : {
+                id : req.body.id
+            }
+        },{
+            SET : {
+                writer : writer
+            }
+        });
+        res.redirect('/admin/products');
+    }
+    catch(err){
+        console.log(err);
+    }
+    
 });
 
-router.post('/products/write', loginRequired, async (req, res) => {
+/*
+router.post('/products/write',csrfProtection,loginRequired,async(req,res)=>{
+   try{
+        await models.product.update(req.user,{
+            where:{
+                id : req.user.id
+            }
+        },{SET :{
+            writer : req.user.displayname
+        }});
+        res.redirect('/admin/products');
+   } 
+   catch(err){
+       console.log(err);
+   }
+});
+*/
+
+router.post('/products/write',csrfProtection ,loginRequired, async (req, res) => {
 
     //유저를 가져온다음에 저장
     const user = await models.User.findByPk(req.user.id);
@@ -268,9 +304,8 @@ router.post('/products/edit/:id', loginRequired, async (req, res) => {
 
 
 
-
 //제품 삭제 페이지
-router.get('/products/delete/:id',  loginRequired, async (req, res) => {
+router.get('/products/delete/:id' ,loginRequired, async (req, res) => {
     try {
             
         //이전에 저장되어있는 파일명을 받아오기 위해
