@@ -106,22 +106,20 @@ router.get('/products/write', csrfProtection,loginRequired, function (req, res) 
 
 
 
-//일어나서 확인하쟈ㅏ, 작성자만 삭제하기 구현완성시켜 술쟁아 + beerBest
+//
 router.post('/products/write', upload.single('thumbnail'), csrfProtection,loginRequired, async (req, res) => {
 
     try{
-        var writer = req.user.displayname;
+        req.body.writer = req.user.displayname;
 
-        req.body.thumbnail = (req.file) ? req.file.filename : "";
-        await models.product.create(req.body);
-        await models.product.update(req.body,{
-            where : {
-                id : req.body.id
-            }
-        },{
-            SET : {
-                writer : writer
-            }
+        let Thumbnail =await (req.body.thumbnail = (req.file) ? req.file.filename : "");
+        await models.product.create({
+            name : req.body.name,
+            thumbnail : Thumbnail,
+            price : req.body.price,
+            description : req.body.description,
+            writer : req.user.displayname,
+            writer_id : req.user.id
         });
         res.redirect('/admin/products');
     }
@@ -181,7 +179,12 @@ router.post('/products/detail/:id',loginRequired, async (req, res) => {
 
         const product = await models.product.findByPk(req.params.id);
         // create + as에 적은 내용 ( Products.js association 에서 적은 내용 )
-        await product.createMemo(req.body)
+        await product.createMemo({
+            content : req.body.content,
+            product_id  : req.params.id,
+            commenter : req.user.displayname,
+            commenter_id : req.user.id
+        });
 
         // await models.ProductsMemo.create({
         //        content : req.body.console,
@@ -213,8 +216,7 @@ router.get('/products/detail/:id',loginRequired, async (req, res) => {
                     'Memo'
                 ]
             });
-
-            res.render('admin/detail.html', { product1,product });
+            res.render('admin/detail.html', { product1,product});
         }
         catch (err) {
             console.log(err);
@@ -228,15 +230,22 @@ router.get('/products/detail/:id',loginRequired, async (req, res) => {
 
 
 //댓글 삭제
-router.get('/products/Sucdelete/:id/:id2',loginRequired,async(req,res)=>{
+router.get('/products/Sucdelete/:id/:id2/:id3',loginRequired,async(req,res)=>{
     try{
-    const MemoId = req.params.id2;
-        models.ProductsMemo.destroy({
-            where:{
-                id : MemoId
-            }
-        });
-        res.redirect('/admin/products/detail/'+ req.params.id);
+        if(req.user.id == req.params.id2){
+            const MemoId = req.params.id3;
+            models.ProductsMemo.destroy({
+                where:{
+                    id : MemoId
+                }
+            });
+            res.redirect('/admin/products/detail/'+ req.params.id);
+        }
+        else{
+            res.send('<script>alert("삭제 권한이 없습니다.");\
+                    location.href="/admin/products";</script>');
+        }
+
     }
     catch(err){
         console.log(err);
@@ -248,17 +257,23 @@ router.get('/products/Sucdelete/:id/:id2',loginRequired,async(req,res)=>{
 
 
 // 수정페이지 라우팅
-router.get('/products/edit/:id', upload.single('thumbnail'), loginRequired,async (req, res) => {
+router.get('/products/edit/:id/:id2', upload.single('thumbnail'), loginRequired,async (req, res) => {
     try {
-        const product = await models.product.findByPk(req.params.id);
-        res.render('admin/form.html', { product });
+        if(req.user.id != req.params.id2){        
+                res.send('<script>alert("수정할 권한이 없습니다.");\
+                location.href="/admin/products";</script>');  
+        }
+        else{
+            const product = await models.product.findByPk(req.params.id);
+            res.render('admin/form.html', { product });     
+        }
     }
     catch (err) {
         console.log(err);
     }
 });
 
-router.get('/products/edit/:id', loginRequired, async (req, res) => {
+router.get('/products/edit/:id/:id2', loginRequired, async (req, res) => {
     //기존의 폼에 value안에 값을 셋팅하기 위해서 만든다
     const product = models.product.findByPk(req.params.id);
     res.render('admin/form.html', { product });
@@ -266,7 +281,7 @@ router.get('/products/edit/:id', loginRequired, async (req, res) => {
 
 
 // 수정내용 업데이트
-router.post('/products/edit/:id', upload.single('thumbnail'),loginRequired ,async (req, res) => {
+router.post('/products/edit/:id/:id2', upload.single('thumbnail'),loginRequired ,async (req, res) => {
     try {
         //이전에 저장되어있는 파일명을 받아오기
         const product = await models.product.findByPk(req.params.id);
@@ -278,7 +293,7 @@ router.post('/products/edit/:id', upload.single('thumbnail'),loginRequired ,asyn
 
         //파일 요청이면 파일명을 담고 아니면 이전 db에서 가져오기
         req.body.thumbnail = (req.file) ? req.file.filename : product.thumbnail;
-
+        req.body.writer = req.user.displayname;
         await models.product.update(
             req.body,
             {
@@ -293,7 +308,7 @@ router.post('/products/edit/:id', upload.single('thumbnail'),loginRequired ,asyn
 });
 
 
-router.post('/products/edit/:id', loginRequired, async (req, res) => {
+router.post('/products/edit/:id/:id2', loginRequired, async (req, res) => {
     await models.product.update(req.body, {
         where: { id: req.params.id }
     }
@@ -304,30 +319,84 @@ router.post('/products/edit/:id', loginRequired, async (req, res) => {
 
 
 
+
+
+//검색기능 페이지
+router.get('/products/search',loginRequired,csrfProtection,async(req,res)=>{
+    try{
+        res.render('admin/search.html',{csrfToken: req.csrfToken()});
+    }
+    catch(err){
+        console.log(err);
+    }
+});
+
+
+//검색기능 처리
+router.post('/products/search',async(req,res)=>{
+    try{
+        const productsName = await models.product.findAll({
+            where : {
+                name: req.body.search
+            }
+        });
+
+        const productsWriter = await models.product.findAll({
+            where : {
+                writer: req.body.search
+            }
+        });    
+
+        console.log('######################',req.body.name);
+
+        if(req.body.name){
+            res.redirect('/products/search',{productsName});
+        }
+        else if(req.body.writer){
+            res.redirect('/products/search',{productsWriter});
+        }
+        else{
+            res.send('<script>alert("검색한 결과가 없습니다.");\
+            location.href="/admin/products";</script>');
+        }
+    }
+    catch(err){
+        console.log(err);
+    }
+})
+
+
+
 //제품 삭제 페이지
 router.get('/products/delete/:id' ,loginRequired, async (req, res) => {
     try {
             
         //이전에 저장되어있는 파일명을 받아오기 위해
         const product = await models.product.findByPk(req.params.id);
-
+        /*
         if (product.thumbnail) { //요청중에 파일이 존재 할시 이전이미지 삭제
-            fs.unlinkSync(uploadDir + '/' + product.thumbnail);
+            fs.unlinkSync(uploadDir + '/' + product.thumbnail);    
         }
-
+        */
+       
+        if(product.writer===req.user.displayname){
         await models.product.destroy(
             {
                 where: { id: req.params.id }
             }
-        );
+              );
         res.redirect('/admin/products');
-    }
+         }
+         else{
+             res.send('<script>alert("유효하지 않은 권한입니다. 삭제할 수 없습니다.");\
+                        location.href="/admin/products";</script>');
+         }
+         
+     }
     catch (err) {
         console.log(err);
     }
 });
-
-
 
 
 

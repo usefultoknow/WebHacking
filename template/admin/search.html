@@ -36,7 +36,8 @@
             <th>삭제</th>
         </tr>
 
-        {% for product in products %}
+        {% if productsName %}
+        {% for product in productsName %}
         <tr>
             <td>
                 <a href="/admin/products/detail/{{  product.id }}">{{ product.name }}</a>
@@ -52,13 +53,35 @@
             </td>
         </tr>
         {% endfor %}
+        {% endif %}
+
+
+        {% if productsWriter %}
+        {% for product in productsWriter %}
+        <tr>
+            <td>
+                <a href="/admin/products/detail/{{  product.id }}">{{ product.name }}</a>
+            </td>
+            <td>
+                {{ product.dateFormat( product.createdAt ) }}
+            </td>
+            <td>
+               {{ product.writer }}  
+            </td>
+            <td>
+                <a href="/admin/products/delete/{{ product.id }}" class="btn btn-danger" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
+            </td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+
     </table>
 
     <a href="/admin/products/write" class="btn btn-default">작성하기</a>
     <div id="search_box2">
-      <form action="/admin/products/search" method="post" style="padding-top : 10px;">
+      <form action="/admin/products/search" method="post" id="search_form" style="padding-top : 10px;">
       <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-      <select>
+      <select name="catgo">
         <option value="name">제목</option>
         <option value="writer">작성자</option>
       </select>

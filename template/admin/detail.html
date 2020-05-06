@@ -18,26 +18,27 @@
             {% endif %}
 
             <div style="padding-bottom: 10px">
-                가격 : {{ product.price }}
+                가격 : {{ product.price }} (원)
             </div>
-            {{ product.description | safe }}
+            내용: {{ product.description | safe }}
 
             <hr />
 
             <ul>
                 {% for memo in product1.Memo %}
                 <li>
+                    {{memo.commenter}} : 
                     {{ memo.content }}
                     
                         (
-                        <a href="/admin/products/Sucdelete/{{product1.id}}/{{memo.id}}" 
+                        <a href="/admin/products/Sucdelete/{{product1.id}}/{{memo.commenter_id}}/{{memo.id}}" 
                             onclick="return confirm('삭제하시겠습니까?')">
                             삭제
                         </a>
                         )                       
                     
                 </li>
-                {% endfor %}
+                {% endfor %}          
             </ul>
 
             댓글 작성하기
@@ -50,7 +51,7 @@
     </div>
 
     <a href="/admin/products" class="btn btn-default">목록으로</a>
-    <a href="/admin/products/edit/{{ product.id }}" class="btn btn-primary">수정</a>
+    <a href="/admin/products/edit/{{ product.id }}/{{ product.writer_id }}" class="btn btn-primary">수정</a>
 
 
 

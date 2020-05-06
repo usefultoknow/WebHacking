@@ -152,7 +152,7 @@ models.sequelize.sync().then( () =>{
 
 
 //테이블 생성시 싱크해주기 위해서 한번 실행
-//  return models.sequelize.sync();
+// return models.sequelize.sync();
 
 
 

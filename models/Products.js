@@ -15,7 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull : false,
       },
-      
+      writer_id : {
+        type: DataTypes.BIGINT.UNSIGNED,
+       },
+
       price: {
         field:"price",
         type: DataTypes.INTEGER.UNSIGNED,

@@ -8,6 +8,13 @@ module.exports =(sequelize, DataTypes)=>{
             primaryKey: true,
             autoIncrement: true 
             },
+            commenter :{
+                type: DataTypes.STRING,
+                allowNull : false,
+              },
+            commenter_id : {
+                type: DataTypes.BIGINT.UNSIGNED,
+            },
             content :  { 
                 type: DataTypes.TEXT,
                 validate : {
