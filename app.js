@@ -1,8 +1,8 @@
 const express = require('express'),
       app = express(),
       https = require('https'),
-      httpport = 3000, //test port 추후 80이용
-      httpsport = 5000, //https port
+      httpport = 5000, //test port 추후 80이용
+      httpsport = 3000, //https port
       nunjucks = require('nunjucks'),
       logger = require('morgan'), //로그 미들웨어
       bodyParser = require('body-parser'), 
@@ -16,11 +16,12 @@ const express = require('express'),
       chat = require('./routes/chat'),
       request = require('request'),
       controllers = require('./controllers/index'),
-      missing = require('./routes/password');
+      missing = require('./routes/password'),
+      missingid = require('./routes/id');
 
 const options = {
     key : fs.readFileSync('./SSLconfig/private.key'),
-    cert:fs.readFileSync('./SSLconfig/server.crt')
+    cert: fs.readFileSync('./SSLconfig/server.crt')
 };
      
       
@@ -141,6 +142,10 @@ app.use('/products',controllers);
 //비밀번호 찾기
 app.use('/missing',missing);
 
+//아이디 찾기
+app.use('/missingid',missingid);
+
+
 //sync() 메서드를 호출하여 models 폴더에서 정의된 모델들을 바탕으로 실제로 Model을 등록
 
 models.sequelize.sync().then( () =>{
@@ -157,11 +162,33 @@ models.sequelize.sync().then( () =>{
 
 
 
+//잘못된 접근 + 404 오류 구현하기
+app.use(function (req, res, next) {
+    res.status(404).send("404 Not Found");
+});
 //잘못된 접근 + 500 오류 구현하기
+app.use(function (req, res, next) {
+    res.status(500).send("500 Error occurred");
+});
 
+
+/*httpport
 const server =app.listen(httpport,()=>{
     console.log('Express listening on port',httpport);
        });
+*/
+
+//httpsport
+const server = https.createServer(options,app).listen(httpsport,async()=>{
+    try{
+        console.log('서버가 실행되었습니다.',httpsport);
+    }
+    catch(err){
+        console.log('https 서버 실행에 문제가 있습니다.');
+    }
+       });
+
+
 
 //listen
 const listen = require('socket.io'),

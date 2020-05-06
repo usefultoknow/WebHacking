@@ -49,7 +49,11 @@ passport.use(new FacebookStrategy({
                 user = await models.User.create({
                    username,
                    displayname : profile.displayName ,
-                   password : "facebook" 
+                   password : "facebook",
+                   gender : "",
+                   Year : "",
+                   Month : "",
+                   Day : ""
                 });
             } else {
                 user = await models.User.findOne({

@@ -1,0 +1,9 @@
+{
+    "mailer": {
+    "service": "Naver",
+        "host": "localhost",
+        "port": "587",                      
+        "user":"konyang_cert15@naver.com",
+        "password":"KonyangCERT0712"
+    }
+}

@@ -134,24 +134,35 @@ router.get('/logout',async(req,res)=>{
 //회원가입 성공메시지 + DB에 데이터 저장
 router.post('/join',async(req,res)=>{
     try{
-       const Confirm = await models.User.findOne({
+       const Confirm1 = await models.User.findOne({
             where : {
                 username : req.body.username
             }
         });
-       const Confirm1 = await models.User.findOne({
+       const Confirm2 = await models.User.findOne({
             where : {
                 displayname : req.body.displayname
             }
         });
-        if(Confirm){
+
+        const Confirm3 = await models.User.findOne({
+            where : {
+                email : req.body.email
+            }
+        });
+
+        if(Confirm1){
            return res.send('<script>alert("동일한 id가 있습니다.");\
         location.href="/accounts/join";</script>');
         }
-        else if(Confirm1){      
+        else if(Confirm2){      
                 res.send('<script>alert("동일한 이름이 있습니다.");\
                 location.href="/accounts/join";</script>');
         }
+        else if(Confirm3){      
+            res.send('<script>alert("동일한 이메일이 있습니다.");\
+            location.href="/accounts/join";</script>');
+    }
         else{
         await models.User.create(req.body);     
         res.send('<script>alert("회원가입 성공");\location.href="/accounts/login";</script>');
