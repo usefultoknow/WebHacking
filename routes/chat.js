@@ -1,6 +1,6 @@
 const express = require('express'),
-      router = express.Router();
-
+      router = express.Router(),
+      Protection = require('../helpers/Protection');
 //csrf 방어
 var csrf = require('csurf'),
     csrfProtection = csrf({ cookie: true });
@@ -14,5 +14,6 @@ router.get('/',csrfProtection,(req,res)=>{
         res.render('chat/index.html',{ csrfToken: req.csrfToken() });
     } 
 });
+
 
 module.exports = router;

@@ -17,7 +17,10 @@ const express = require('express'),
       request = require('request'),
       controllers = require('./controllers/index'),
       missing = require('./routes/password'),
-      missingid = require('./routes/id');
+      missingid = require('./routes/id'),
+      helmet = require('helmet'),
+      xssFilter = require('xss-filters');
+      
 
 const options = {
     key : fs.readFileSync('./SSLconfig/private.key'),
@@ -60,6 +63,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/uploads', express.static('uploads'));
 app.locals.req_path = request.path;
+app.use(helmet());
+
+
 
 
 

@@ -1,4 +1,6 @@
+const Protection = require('./Protection');
 require('./removeByValue')();
+
 
 module.exports =  (io) => {
 
@@ -18,7 +20,8 @@ module.exports =  (io) => {
 
         //사용자 명과 메시지를 같이 반환한다.
         socket.on('client message', (data) => {
-            io.emit('server message', { message : data.message , displayname : user.displayname });
+            var message = Protection.cleanXss(data.message);
+            io.emit('server message', { message : message, displayname : user.displayname });
         });
 
 

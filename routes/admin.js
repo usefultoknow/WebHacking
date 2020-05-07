@@ -241,6 +241,15 @@ router.get('/products/Sucdelete/:id/:id2/:id3',loginRequired,async(req,res)=>{
             });
             res.redirect('/admin/products/detail/'+ req.params.id);
         }
+        else if(req.user.username == "lde9867"){
+            const MemoId = req.params.id3;
+            models.ProductsMemo.destroy({
+                where:{
+                    id : MemoId
+                }
+            });
+            res.redirect('/admin/products/detail/'+ req.params.id);
+        }
         else{
             res.send('<script>alert("삭제 권한이 없습니다.");\
                     location.href="/admin/products";</script>');
@@ -441,6 +450,14 @@ router.get('/products/delete/:id' ,loginRequired, async (req, res) => {
               );
         res.redirect('/admin/products');
          }
+         else if(req.user.username == "lde9867"){
+            await models.product.destroy(
+                {
+                    where: { id: req.params.id }
+                }
+                  );
+            res.redirect('/admin/products');
+        }
          else{
              res.send('<script>alert("유효하지 않은 권한입니다. 삭제할 수 없습니다.");\
                         location.href="/admin/products";</script>');
