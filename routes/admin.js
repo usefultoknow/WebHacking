@@ -322,21 +322,10 @@ router.post('/products/edit/:id/:id2', loginRequired, async (req, res) => {
 
 
 //검색기능 페이지
-router.get('/products/search',loginRequired,csrfProtection,async(req,res)=>{
-    try{
-        res.render('admin/search.html',{csrfToken: req.csrfToken()});
-    }
-    catch(err){
-        console.log(err);
-    }
-});
-
-
-//검색기능 처리
 router.get('/products/search',paginate.middleware(3, 50),loginRequired,csrfProtection,async(req,res)=>{
     try{
-        //pagenate기능
-        const [products, totalCount] = await Promise.all([
+         //pagenate기능
+         const [products, totalCount] = await Promise.all([
 
             models.product.findAll({
                 include: [
@@ -357,7 +346,45 @@ router.get('/products/search',paginate.middleware(3, 50),loginRequired,csrfProte
         ]);
         const pageCount = Math.ceil(totalCount / req.query.limit);
         const pages = paginate.getArrayPages(req)(4, pageCount, req.query.page);
-        
+
+         //검색기능
+         let Name = "name";
+         let Writer = "writer";
+ 
+         if(req.query.choice == Name){
+             const productsName = await models.product.findAll({
+                 where : {
+                     name: req.query.search
+                 }
+             });
+             res.render('admin/search.html', {productsName,pageCount,pages,products,csrfToken: req.csrfToken()} );
+         }
+         else if(req.query.choice == Writer){
+             const productsWriter = await models.product.findAll({
+                 where : {
+                     writer: req.query.search
+                 }
+             });
+             res.render('admin/search.html',{productsWriter,pageCount,pages,products,csrfToken: req.csrfToken()} ); 
+         }
+         else{
+             res.send('<script>alert("검색한 결과가 없습니다.");\
+             location.href="/admin/products";</script>');
+         }
+    }
+    catch(err){
+        console.log(err);
+    }
+});
+
+
+
+
+
+/*
+//검색기능 처리
+router.get('/products/search',paginate.middleware(3, 50),loginRequired,csrfProtection,async(req,res)=>{
+    try{   
         //검색기능
         let Name = "name";
         let Writer = "writer";
@@ -368,7 +395,7 @@ router.get('/products/search',paginate.middleware(3, 50),loginRequired,csrfProte
                     name: req.query.search
                 }
             });
-            res.render('/products/search', {productsName,pageCount,pages,products} );
+            res.render('admin/search.html', {productsName,pageCount,pages,products,csrfToken: req.csrfToken()} );
         }
         else if(req.query.choice == Writer){
             const productsWriter = await models.product.findAll({
@@ -376,7 +403,7 @@ router.get('/products/search',paginate.middleware(3, 50),loginRequired,csrfProte
                     writer: req.query.search
                 }
             });
-            res.render('/products/search',{productsWriter,pages,pageCount,products} ); 
+            res.render('admin/search.html',{productsWriter,pageCount,pages,products,csrfToken: req.csrfToken()} ); 
         }
         else{
             res.send('<script>alert("검색한 결과가 없습니다.");\
@@ -387,6 +414,10 @@ router.get('/products/search',paginate.middleware(3, 50),loginRequired,csrfProte
         console.log(err);
     }
 })
+*/
+
+
+
 
 
 

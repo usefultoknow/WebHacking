@@ -10,12 +10,12 @@
                 <td>
                 <input type="hidden" name="writer">
                 <input type="text" name="name" 
-                class="form-control" value="{{ product.name }}" /></td>
+                class="form-control" value="{{ product.name }}" required/></td>
             </tr>
             <tr>
                     <th>섬네일</th>
                     <td>
-                        <input type="file" name="thumbnail" />
+                        <input type="file" name="thumbnail" required/>
                         {% if product.thumbnail %}
                         <a href="/uploads/{{ product.thumbnail }}" target="_blank">업로드 이미지 보기</a>
                         {% endif %}
@@ -24,12 +24,12 @@
             <tr>
                 <th>가격</th>
                 <td><input type="text" name="price"
-                     class="form-control" value="{{ product.price }}"/></td>
+                     class="form-control" value="{{ product.price }}" required/></td>
             </tr>
             <tr>
                 <th>설명</th>
                 <td>
-                    <textarea name="description" class="form-control" id="summernote">{{ product.description }}</textarea>
+                    <textarea name="description" class="form-control" id="summernote" required>{{ product.description }}</textarea>
                 </td>
             </tr>
         </table>
