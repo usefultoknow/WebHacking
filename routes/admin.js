@@ -204,7 +204,7 @@ router.post('/products/detail/:id',loginRequired, async (req, res) => {
 
 
 //상세보기 페이지 라우팅 + 댓글 삽입
-router.get('/products/detail/:id',loginRequired, async (req, res) => {
+router.get('/products/detail/:id',loginRequired,csrfProtection, async (req, res) => {
     try {
         const product = await models.product.findByPk(req.params.id);
         try {        
@@ -216,7 +216,7 @@ router.get('/products/detail/:id',loginRequired, async (req, res) => {
                     'Memo'
                 ]
             });
-            res.render('admin/detail.html', { product1,product});
+            res.render('admin/detail.html', { product1,product,csrfToken: req.csrfToken()});
         }
         catch (err) {
             console.log(err);
@@ -333,27 +333,50 @@ router.get('/products/search',loginRequired,csrfProtection,async(req,res)=>{
 
 
 //검색기능 처리
-router.post('/products/search',async(req,res)=>{
+router.get('/products/search',paginate.middleware(3, 50),loginRequired,csrfProtection,async(req,res)=>{
     try{
-        const productsName = await models.product.findAll({
-            where : {
-                name: req.body.search
-            }
-        });
+        //pagenate기능
+        const [products, totalCount] = await Promise.all([
 
-        const productsWriter = await models.product.findAll({
-            where : {
-                writer: req.body.search
-            }
-        });    
+            models.product.findAll({
+                include: [
+                    {
+                        model: models.User,
+                        as: 'Owner',
+                        attributes: ['username', 'displayname']
+                    },
+                ],
+                limit: req.query.limit,
+                offset: req.offset,
+                order: [
+                    ["createdAt", "desc"]
+                ]
 
-        console.log('######################',req.body.name);
+            }),
+            models.product.count()
+        ]);
+        const pageCount = Math.ceil(totalCount / req.query.limit);
+        const pages = paginate.getArrayPages(req)(4, pageCount, req.query.page);
+        
+        //검색기능
+        let Name = "name";
+        let Writer = "writer";
 
-        if(req.body.name){
-            res.redirect('/products/search',{productsName});
+        if(req.query.choice == Name){
+            const productsName = await models.product.findAll({
+                where : {
+                    name: req.query.search
+                }
+            });
+            res.render('/products/search', {productsName,pageCount,pages,products} );
         }
-        else if(req.body.writer){
-            res.redirect('/products/search',{productsWriter});
+        else if(req.query.choice == Writer){
+            const productsWriter = await models.product.findAll({
+                where : {
+                    writer: req.query.search
+                }
+            });
+            res.render('/products/search',{productsWriter,pages,pageCount,products} ); 
         }
         else{
             res.send('<script>alert("검색한 결과가 없습니다.");\

@@ -56,9 +56,9 @@
 
     <a href="/admin/products/write" class="btn btn-default">작성하기</a>
     <div id="search_box2">
-      <form action="/admin/products/search" method="post" style="padding-top : 10px;">
+      <form action="/admin/products/search" method="get" style="padding-top : 10px;">
       <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-      <select>
+      <select name="choice">
         <option value="name">제목</option>
         <option value="writer">작성자</option>
       </select>

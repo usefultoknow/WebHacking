@@ -3,6 +3,7 @@
 
 
 {% block content -%}
+<input type="hidden" name="_csrf" value="{{ csrfToken }}" />
     <div class="panel panel-default">
         <div class="panel-heading">
             {{ product.name }}
@@ -43,6 +44,7 @@
 
             댓글 작성하기
             <form action="" method="post">
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <textarea class="form-control" name="content" required></textarea>
                 <button class="btn btn-primary" style="margin-top: 10px">메모작성</button>
             </form> 

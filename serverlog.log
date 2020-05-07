@@ -1,0 +1,1 @@
+::1 - - [07/May/2020:11:33:07 +0000] "GET /admin/products/search?_csrf=&choice=name&search=HP HTTP/1.1" 500 3144 "https://localhost:3000/admin/products" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"

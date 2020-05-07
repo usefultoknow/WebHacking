@@ -1,4 +1,4 @@
-{% set title = "제품 등록" %}
+{% set title = "게시판 작성" %}
 {% extends "layout/base.html" %}
  
 {% block content -%}
@@ -10,27 +10,33 @@
                 <td>
                 <input type="hidden" name="writer">
                 <input type="text" name="name" 
-                    class="form-control" value="{{ product.name }}" /></td>
+                class="form-control" value="{{ product.name }}" /></td>
             </tr>
             <tr>
                     <th>섬네일</th>
                     <td>
                         <input type="file" name="thumbnail" />
+                        {% if product.thumbnail %}
+                        <a href="/uploads/{{ product.thumbnail }}" target="_blank">업로드 이미지 보기</a>
+                        {% endif %}
                     </td>
                 </tr>
             <tr>
                 <th>가격</th>
-                <td><input type="number" name="price"
+                <td><input type="text" name="price"
                      class="form-control" value="{{ product.price }}"/></td>
             </tr>
             <tr>
                 <th>설명</th>
-                <td><textarea name="description" class="form-control" id="summernote">{{ product.description }}</textarea></td>
+                <td>
+                    <textarea name="description" class="form-control" id="summernote">{{ product.description }}</textarea>
+                </td>
             </tr>
         </table>
         <button class="btn btn-primary">작성하기</button>
     </form>
-<!-- 스타일관련 -->
+
+    <!-- 스타일관련 -->
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.6/summernote.css" rel="stylesheet">
 <!-- 자바스크립트관련 -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.6/summernote.js"></script>
@@ -64,7 +70,7 @@
                     }
                 });
             }
-            //파일 전송시 bootstrap안의 input 태그를 삭제한다.
+        // 파일 전송시 bootstrap안의 input태그를 삭제한다.
             $('#editForm').submit(function(){
                 $('input[name=files]').remove();
             });
