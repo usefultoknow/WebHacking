@@ -17,12 +17,16 @@
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="Password" name="password" type="password" value="" required>
+                            <font size=1>*password는 빈 공백없이 10자에서 20자 이내,숫자,문자,특수문자중 2가지 이상을 혼합해주세요.*</font>
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="Password 확인" name="password2" type="password" value="" required>
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="이름" name="displayname" type="text" value="" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" id="phone" placeholder="핸드폰번호" name="phone" type="text" maxlength="13" value="" required>
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="이메일" name="email" type="text" value="" required>
@@ -38,7 +42,7 @@
                         <div class="form-group">
                         생년월일
                             <select name="Year" class="form-control" required>
-                                {% for i in range(1950,2021) -%}
+                                {% for i in range(1920,2021) -%}
                                 <option>{{i}}</option>
                                 {%- endfor %}
                             </select>
@@ -55,11 +59,13 @@
                         </div>
                         <!-- Change this to a button or input when using this as a form -->
                         <input type="submit" class="btn btn-lg btn-success btn-block" value="가입하기">
+                        <!--
                         <div style="margin-top: 10px">
                             <a href="/auth/facebook" class="btn btn-lg btn-primary btn-block">
                                 <i class="fa fa-facebook" aria-hidden="true"></i> 페이스북 회원가입
                             </a>
                         </div>
+                        -->
                     </fieldset>
                 </form>
             </div>
@@ -73,18 +79,56 @@ $(document).ready(function() {
         var $passwordInput = $('#join_form input[name=password]');
         var $passwordInput2 = $('#join_form input[name=password2]');
 
-        if($passwordInput.val().length < 8){
-            alert("8글자 이상 작성해주세요");
-            return false;
+     function chkPwd($passwordInput){
+
+        var pw = $passwordInput;
+        var num = pw.search(/[0-9]/g);
+        var eng = pw.search(/[a-z]/ig);
+        var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+
+        if(pw.length < 10 || pw.length > 20){
+        alert("10자리 ~ 20자리 이내로 입력해주세요.");
+        return false;
         }
-        
-        if($passwordInput.val() !== $passwordInput2.val()){
-            alert("패스워드와 확인용패스워드를 똑같이 입력해주세요.");
-            return false;
+
+        if(pw.search(/₩s/) != -1){
+        alert("비밀번호는 공백업이 입력해주세요.");
+        return false;
+        }
+
+        if( (num < 0 && eng < 0) || (eng < 0 && spe < 0) || (spe < 0 && num < 0) ){
+        alert("영문,숫자, 특수문자중 2가지 이상을 혼합하여 입력해주세요.");
+        return false;
         }
 
         return true;
+        }
+
+        if(!chkPwd( $.trim($passwordInput.val()))){
+        $passwordInput.val('');
+        $passwordInput.focus();
+        return false;
+        }
+
+       
     });
 });
+
+$('#phone').keydown(function(event) {
+    var key = event.charCode || event.keyCode || 0;
+    $text = $(this);
+    if (key !== 8 && key !== 9) {
+        if ($text.val().length === 3) {
+            $text.val($text.val() + '-');
+        }
+        if ($text.val().length === 8) {
+            $text.val($text.val() + '-');
+        }
+    }
+ 
+    return (key == 8 || key == 9 || key == 46 || (key >= 48 && key <= 57) || (key >= 96 && key <= 105));          
+});
+
+
 </script>
 {% endblock %}

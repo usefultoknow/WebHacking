@@ -21,7 +21,8 @@ const express = require('express'),
       helmet = require('helmet'),
       xssFilter = require('xss-filters'),
       dress = require('./routes/dress'),
-      design = require('./routes/design');
+      design = require('./routes/design'),
+      change = require('./routes/change');
       
 
 const options = {
@@ -134,6 +135,7 @@ app.use('/accounts',accounts);
 //home 화면
 app.use('/',home);
 
+
 //chat 화면
 app.use('/chat',chat);
 
@@ -149,8 +151,12 @@ app.use('/products',controllers);
 //비밀번호 찾기
 app.use('/missing',missing);
 
+
 //아이디 찾기
 app.use('/missingid',missingid);
+
+//사용자 정보변경
+app.use('/change',change);
 
 
 //sync() 메서드를 호출하여 models 폴더에서 정의된 모델들을 바탕으로 실제로 Model을 등록

@@ -13,9 +13,7 @@ const Protection = {};
 
 // ############################################### XSS 문자열 치환
 Protection.cleanXss = (value) => {
-    if(value == "" || value == null){
-        throw new Error('value is empty');
-    }
+
     /*
     value = value.replaceAll("&", "&amp;");
     value = value.replaceAll("\"", "&quot;");
@@ -32,7 +30,7 @@ Protection.cleanXss = (value) => {
     value = value.replace(/>/gi, "&gt;");
     value = value.replace(/\r/gi, "<br>");
     value = value.replace(/\n/gi, "<p>");
-    value = value.replace(/-/gi, "");   // 임시 추가 (2020.04.06 - 상준- => 전화번호 입력할 때 "-" 빼는 용도)
+    value = value.replace(/-/gi, "");   // 
 
     return value;
 }

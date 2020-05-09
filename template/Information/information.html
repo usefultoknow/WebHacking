@@ -2,30 +2,41 @@
 {% extends "layout/base.html" %}
 
 {% block content -%}
+<form action="/change" method="post" enctype="multipart/form-data">
+<input type="hidden" name="_csrf" value="{{ csrfToken }}" />
     <div class="panel panel-default">
         <div class="panel-heading">
-           아이디 :  {{ Username }}
+           <b>아이디 :  {{ users.username }}</b>
         </div>
     </div>
         <div class="panel-body">
             <div style="padding-bottom: 10px">
-                이름 : {{ Displayname}}
+               <b> 이름 : {{ users.displayname }}</b>
+            </div>
+        </div>
+         <div class="panel-body">
+            <div style="padding-bottom: 10px">
+              <b>  이메일 : {{ users.email }}</b>
             </div>
         </div>
         <div class="panel-body">
             <div style="padding-bottom: 10px">
-                성별 : {{ gender}}
+              <b>  전화번호 : {{ users.phone }}</b>
             </div>
         </div>
         <div class="panel-body">
             <div style="padding-bottom: 10px">
-                생년월일 : {{ Year }}년 {{ Month }}월 {{ Day }}일 
+              <b>  성별 : {{ users.gender }}</b>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div style="padding-bottom: 10px">
+             <b>   생년월일 : {{ users.Year }}년 {{ users.Month }}월 {{ users.Day }}일 </b>
          </div>
-
-
-
-            <hr />
-           
+    
+          <a href="/change" class="btn btn-lg btn-success">정보 변경</a>
+          
+       </form>           
 <!--
         </div>
     </div>

@@ -6,7 +6,9 @@ const express = require('express'),
       passwordHash = require('../helpers/passwordHash'),
       loginRequired = require('../helpers/loginRequired');
 
-
+      var csrf = require('csurf'),
+      csrfProtection = csrf({ cookie: true });
+  
       
 
 //로그인 세션생성,유지와 성공시,실패시 페이지 or 메시지  
@@ -175,16 +177,25 @@ router.post('/join',async(req,res)=>{
 
 
 //회원정보 넘겨주기
-router.get('/information',loginRequired,async(req,res)=>{
-    const Username = req.user.username,
-    Displayname = req.user.displayname,
-    gender = req.user.gender,
-    Year = req.user.Year,
-    Month = req.user.Month,
-    Day = req.user.Day;
+router.get('/information',loginRequired,csrfProtection,async(req,res)=>{
+    try{
+   
+    const users = await models.User.findOne({
+        where : {
+           id : req.user.id
+        }
+    });
 
-    res.render('Information/information.html',{Username,Displayname,gender,Year,Month,Day});
+    res.render('Information/information.html',{users,csrfToken: req.csrfToken()});
+
+    }
+    catch(err){
+        console.log(err);
+    }
+    
 });
+
+
 
 
 

@@ -7,9 +7,10 @@
         {% for product in products %}
         <div class="masonry-grid">
             {% if product.thumbnail %}
-                <img src="/uploads/{{ product.thumbnail }}">
+              <a href="/admin/products/detail/{{product.id}}"><img src="/uploads/{{ product.thumbnail }}"></a>
             {% endif %}
             <p>
+                <font size="3"><b>자유게시판</b></font></br>
                 {{ product.name }}<br />
                 {{ product.price }}(원)<br />
                 by {{ product.Owner.displayname }} (
@@ -24,9 +25,10 @@
         {% for dress in Dress %}
         <div class="masonry-grid">
             {% if dress.thumbnail %}
-                <img src="/uploads/{{ dress.thumbnail }}">
+               <a href="/dress/products/detail/{{dress.id}}"> <img src="/uploads/{{ dress.thumbnail }}"></a>
             {% endif %}
             <p>
+                <font size="3"><b>의류/악세사리 게시판</b></font></br>
                 {{ dress.name }}<br />
                 {{ dress.price }}(원)<br />
                 by {{ dress.DOwner.displayname }} (
@@ -36,6 +38,22 @@
         </div>
         {% endfor %}
 
+    <div class="container" id="masonry_container">
+        {% for design in Design %}
+        <div class="masonry-grid">
+            {% if design.thumbnail %}
+               <a href="/design/products/detail/{{design.id}}"> <img src="/uploads/{{ design.thumbnail }}"></a>
+            {% endif %}
+            <p>
+                <font size="3"><b>가구/생활용품 게시판</b></font></br>
+                {{ design.name }}<br />
+                {{ design.price }}(원)<br />
+                by {{ design.DOwner.displayname }} (
+                    {{ design.dateFormat( product.createdAt ) }}
+                )
+            </p>
+        </div>
+        {% endfor %}
     </div>
 
 <style type="text/css">
