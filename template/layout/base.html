@@ -6,6 +6,25 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="x-UA-Compatible" content="ie=edge">
         <title>{{title}}</title>
+
+        <style>
+            #banner { 
+                display: block; 
+                margin : 0px auto;
+            }
+            @media(max-width : 900px){
+                #banner {
+                    margin : 0px auto;
+                    max-width : 500px;
+                    max-height : 100px;
+                }
+            }
+
+        </style>
+        <body>
+            <img src = '/img/3456.png' width="1140" height="260" id="banner">
+        </body>
+
         <script
         src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
@@ -18,9 +37,10 @@
         <!-- jQuery 아래 두기 --> 
     <!--bootstrap js 추가 -->
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     </head>
     <body>
-        <div class="container" style="padding-top:100px">
+        <div class="container" style="padding-top:5px">
             <nav class="navbar navbar-inverse"> 
                 <div class="container-fluid"> 
                     <div class="navbar-header">

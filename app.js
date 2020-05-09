@@ -31,8 +31,7 @@ const options = {
       
       
       
-    
-     
+   
     
     
 
@@ -40,6 +39,7 @@ const options = {
           autoescape:true,
           express:app
       });
+
 
 
 //flash 메시지 관련 모듈    
@@ -61,13 +61,10 @@ app.use(logger('combined',{stream:fs.WriteStream('./serverlog.log')}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use('/img',express.static('img'));
 app.use('/uploads', express.static('uploads'));
 app.locals.req_path = request.path;
 app.use(helmet());
-
-
-
-
 
 
 //db session 관련 셋팅
