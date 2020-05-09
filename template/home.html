@@ -11,12 +11,31 @@
             {% endif %}
             <p>
                 {{ product.name }}<br />
+                {{ product.price }}(원)<br />
                 by {{ product.Owner.displayname }} (
                     {{ product.dateFormat( product.createdAt ) }}
                 )
             </p>
         </div>
         {% endfor %}
+    <div>
+
+    <div class="container" id="masonry_container">
+        {% for dress in Dress %}
+        <div class="masonry-grid">
+            {% if dress.thumbnail %}
+                <img src="/uploads/{{ dress.thumbnail }}">
+            {% endif %}
+            <p>
+                {{ dress.name }}<br />
+                {{ dress.price }}(원)<br />
+                by {{ dress.DOwner.displayname }} (
+                    {{ dress.dateFormat( product.createdAt ) }}
+                )
+            </p>
+        </div>
+        {% endfor %}
+
     </div>
 
 <style type="text/css">

@@ -19,7 +19,9 @@ const express = require('express'),
       missing = require('./routes/password'),
       missingid = require('./routes/id'),
       helmet = require('helmet'),
-      xssFilter = require('xss-filters');
+      xssFilter = require('xss-filters'),
+      dress = require('./routes/dress'),
+      design = require('./routes/design');
       
 
 const options = {
@@ -123,6 +125,8 @@ app.use((req,res,next)=>{
 
 //get - 웹 브라우저에서 url을 입력 시 응답하는 부분
 app.use('/admin',admin);
+app.use('/dress',dress);
+app.use('/design',design);
 
 //회원가입 페이지
 app.use('/accounts',accounts);

@@ -89,7 +89,28 @@ User.associate = (models) => {
             onDelete: 'CASCADE'
         }
     );
-    
+ 
+    //Dress table
+    User.hasMany(
+        models.Dress, 
+        {   
+            as: 'Dress', 
+            foreignKey: 'Dress_id', 
+            sourceKey: 'id' , 
+            onDelete: 'CASCADE'
+        }
+    );
+
+    //Design table
+    User.hasMany(
+        models.Design, 
+        {   
+            as: 'Design', 
+            foreignKey: 'Design_id', 
+            sourceKey: 'id' , 
+            onDelete: 'CASCADE'
+        }
+    );
 };
     
 

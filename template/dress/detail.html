@@ -1,0 +1,60 @@
+{% set title = "관리자 : 상세페이지" %}
+{% extends "layout/base.html" %}
+
+
+{% block content -%}
+<input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {{ product.name }}
+        </div>
+        <div class="panel-body">
+            <div style="padding-bottom: 10px">
+                작성일 : {{ product.dateFormat( product.date ) }}
+            </div>
+            {% if product.thumbnail %}
+            <p>
+                <img src="/uploads/{{ product.thumbnail }}" style="max-width:100%"/>
+            </p>
+            {% endif %}
+
+            <div style="padding-bottom: 10px">
+                가격 : {{ product.price }} (원)
+            </div>
+            내용: {{ product.description | safe }}
+
+            <hr />
+
+            <ul>
+                {% for memo in product1.DMemo %}
+                <li>
+                    {{memo.commenter}} : 
+                    {{ memo.content }}
+                    
+                        (
+                        <a href="/dress/products/Sucdelete/{{product1.id}}/{{memo.commenter_id}}/{{memo.id}}" 
+                            onclick="return confirm('삭제하시겠습니까?')">
+                            삭제
+                        </a>
+                        )                       
+                    
+                </li>
+                {% endfor %}          
+            </ul>
+
+            댓글 작성하기
+            <form action="" method="post">
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                <textarea class="form-control" name="content" required></textarea>
+                <button class="btn btn-primary" style="margin-top: 10px">메모작성</button>
+            </form> 
+
+        </div>
+    </div>
+
+    <a href="/dress/products" class="btn btn-default">목록으로</a>
+    <a href="/dress/products/edit/{{ product.id }}/{{ product.writer_id }}" class="btn btn-primary">수정</a>
+
+
+
+{% endblock %}

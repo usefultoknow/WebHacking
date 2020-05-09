@@ -1,0 +1,69 @@
+{% set title = "상품 리스트" %}
+{% extends "layout/base.html" %}  <!-- 해당 템플릿을 사용할거라고 지정해주는 법-->
+
+
+{% block content -%}
+    <table class="table table-bordered table-hover" id="board-table">
+        <nav>
+            <ul class="pagination">
+            {% if paginate.hasPreviousPages %}
+                <li>
+                    <a href="{{ paginate.href(true) }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+            
+            {% for page in pages %}
+                <li class="{% if paginate.page == page.number %} active {% endif %}">
+                    <a href="{{ page.url }}">{{ page.number }} </a>
+                </li>
+            {% endfor %}
+        
+            {% if paginate.hasNextPages( pageCount ) %}
+                <li>
+                    <a href="{{ paginate.href() }}">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+            </ul>
+        </nav>
+        <tr>
+            <th>제목</th>
+            <th>작성일</th>
+            <th>작성자</th>
+            <th>삭제</th>
+        </tr>
+
+        {% for product in products %}
+        <tr>
+            <td>
+                <a href="/design/products/detail/{{  product.id }}">{{ product.name }}</a>
+            </td>
+            <td>
+                {{ product.dateFormat( product.createdAt ) }}
+            </td>
+            <td>
+               {{ product.writer }}  
+            </td>
+            <td>
+                <a href="/design/products/delete/{{ product.id }}" class="btn btn-danger" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="/design/products/write" class="btn btn-default">작성하기</a>
+    <div id="search_box2">
+      <form action="/design/products/search" method="get" style="padding-top : 10px;">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+      <select name="choice">
+        <option value="name">제목</option>
+        <option value="writer">작성자</option>
+      </select>
+      <input type="text" name="search" size="40" required="required"/> <button>검색</button>
+    </form>
+  </div>
+</div>
+    {% endblock %}

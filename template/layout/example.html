@@ -12,6 +12,8 @@
                 display: block; 
                 margin : 0px auto;
             }
+
+
             
             @media(max-width : 900px){
                 #banner {
@@ -59,13 +61,12 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
                         <ul class="nav navbar-nav">
                             {% from "macro/link.html" import link %}
-                            {% if isLogin %}
                             {{ link( '/' , "Home" , req_path ) }}
-                            {{ link( '/admin/products' , "자유 게시판" , req_path ) }}
-                            {{ link( '/dress/products' , "의류/악세사리 게시판" , req_path ) }}
-                            {{ link( '/design/products' , "가구/생활용품 게시판" , req_path ) }}
+                            {{ link( '/admin/products' , "중고 게시판" , req_path ) }}
                             {{ link( '/chat' , "채팅" , req_path ) }}
                             {{ link( '/accounts/information' , "내 정보" , req_path ) }}
+
+                            {% if isLogin %}
                              <li><a href="/accounts/logout" onclick="return confirm('로그아웃 하시겠습니까?')">LOGOUT</a></li>
                             {% else %}
                             {{ link( '/accounts/join' , "회원가입" , req_path ) }}
@@ -75,9 +76,6 @@
                     </div> 
                 </div> 
             </nav> 
-            <script>
-            </script>
-            
             {% block content %}{% endblock %} <!--기본 구조를 지정해줌-->
         </div>
     </body>
