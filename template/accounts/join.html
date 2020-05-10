@@ -82,9 +82,15 @@ $(document).ready(function() {
         var $passwordInput = $('#join_form input[name=password]');
         var $passwordInput2 = $('#join_form input[name=password2]');
 
+        if($passwordInput.val() !== $passwordInput2.val()){
+            alert("패스워드와 확인용패스워드를 똑같이 입력해주세요.");
+            return false;
+        }
+
      function chkPwd($passwordInput){
 
         var pw = $passwordInput;
+        var pw2 =$passwordInput2;
         var num = pw.search(/[0-9]/g);
         var eng = pw.search(/[a-z]/ig);
         var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
@@ -103,6 +109,8 @@ $(document).ready(function() {
         alert("영문,숫자, 특수문자중 2가지 이상을 혼합하여 입력해주세요.");
         return false;
         }
+
+
 
         return true;
         }
