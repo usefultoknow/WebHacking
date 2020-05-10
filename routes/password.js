@@ -26,7 +26,7 @@ router.post('/password',async(req,res)=>{
         const confirm = await models.User.findOne({
             where : { 
                 username : req.body.username,
-                displayname : req.body.displayname,
+                name : req.body.name,
                 email : req.body.email,
                 gender : req.body.gender,
                 Year : req.body.Year,
