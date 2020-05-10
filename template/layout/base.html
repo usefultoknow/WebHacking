@@ -8,6 +8,17 @@
         <title>{{title}}</title>
 
         <style>
+        @font-face{
+            font-family : "JejuGothic";
+            src:url("font/JejuGothic.ttf") format("truetype");
+            font-style : normal;
+            font-weight:normal;
+        }
+
+        *{
+            font-family:JejuGothic;
+            font-size:100%;
+        }
             #banner { 
                 display: block; 
                 margin : 0px auto;
@@ -20,9 +31,39 @@
                     max-height : 100px;
                 }
             }
+       
+            table.type10 {
+                border-collapse: collapse;
+                text-align: left;
+                line-height: 1.5;
+                border-top: 1px solid #ccc;
+                border-bottom: 1px solid #ccc;
+                margin: 20px 10px;
+            }
+            table.type10 thead th {
+                width: 150px;
+                padding: 10px;
+                font-weight: bold;
+                vertical-align: top;
+                color: #fff;
+                background: #5a5857;
+                margin: 20px 10px;
+            }
+            table.type10 tbody th {
+                width: 150px;
+                padding: 10px;
+            }
+            table.type10 td {
+                width: 350px;
+                padding: 10px;
+                vertical-align: top;
+            }
+            table.type10 .even {
+                background: #f7f6f6;
+            }
 
         </style>
-        <body>
+        <body oncontextmenu="return false" ondragstart="return false" onselectstart="return false"]>
             <img src = '/img/3456.png' width="1140" height="260" id="banner">
         </body>
 
@@ -40,7 +81,7 @@
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     </head>
-    <body>
+    <body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
         <div class="container" style="padding-top:5px">
             <nav class="navbar navbar-inverse"> 
                 <div class="container-fluid"> 

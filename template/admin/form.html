@@ -15,7 +15,7 @@
             <tr>
                     <th>섬네일</th>
                     <td>
-                        <input type="file" name="thumbnail" required/>
+                        <input type="file" name="thumbnail"/>
                         {% if product.thumbnail %}
                         <a href="/uploads/{{ product.thumbnail }}" target="_blank">업로드 이미지 보기</a>
                         {% endif %}
@@ -23,8 +23,8 @@
                 </tr>
             <tr>
                 <th>가격</th>
-                <td><input type="text" name="price"
-                     class="form-control" value="{{ product.price }}" required/></td>
+                <td><input type="text" name="price" onKeyup="this.value=this.value.replace(/[^0-9]/g,'')"
+                     class="form-control" value="{{ product.price }}" maxlength="9" required/></td>
             </tr>
             <tr>
                 <th>설명</th>
@@ -70,6 +70,7 @@
                     }
                 });
             }
+
         // 파일 전송시 bootstrap안의 input태그를 삭제한다.
             $('#editForm').submit(function(){
                 $('input[name=files]').remove();

@@ -2,10 +2,13 @@ const express = require('express'),
       router = express.Router(),
       models = require('../models'),
       loginRequired = require('../helpers/loginRequired');
+      
 
 
 
-router.get('/',loginRequired,async(_,res)=>{
+router.get('/',loginRequired,async(req,res)=>{
+    try{
+
         const Dress = await models.Dress.findAll({
             include : [
                 {
@@ -15,6 +18,8 @@ router.get('/',loginRequired,async(_,res)=>{
                 },
             ]
         });
+
+        /* 자유게시판은 표시 안할꺼면 이렇게
         const products = await models.product.findAll({
             include : [
                 {
@@ -24,6 +29,8 @@ router.get('/',loginRequired,async(_,res)=>{
                 },
             ]
         });
+        */
+
         const Design = await models.Design.findAll({
             include : [
                 {
@@ -34,7 +41,11 @@ router.get('/',loginRequired,async(_,res)=>{
             ]
         });
     //console.log(models.product.findAll());
-        res.render('home.html',{Dress,products,Design});
+        res.render('home.html',{Dress,Design});
+    }
+    catch(err){
+        console.log(err);
+    }
     });      
 
 

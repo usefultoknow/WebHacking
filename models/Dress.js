@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   const Dress = sequelize.define('Dress', {
       name: {
         field: "name",
-        type: DataTypes.STRING(20),
+        type: DataTypes.STRING,
         allowNull: false,
       },
       thumbnail :{

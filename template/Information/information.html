@@ -1,40 +1,47 @@
 {% set title = "유저 정보 페이지" %}
 {% extends "layout/base.html" %}
 
+
 {% block content -%}
 <form action="/change" method="post" enctype="multipart/form-data">
-<input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-    <div class="panel panel-default">
-        <div class="panel-heading">
-           <b>아이디 :  {{ users.username }}</b>
-        </div>
-    </div>
-        <div class="panel-body">
-            <div style="padding-bottom: 10px">
-               <b> 이름 : {{ users.displayname }}</b>
-            </div>
-        </div>
-         <div class="panel-body">
-            <div style="padding-bottom: 10px">
-              <b>  이메일 : {{ users.email }}</b>
-            </div>
-        </div>
-        <div class="panel-body">
-            <div style="padding-bottom: 10px">
-              <b>  전화번호 : {{ users.phone }}</b>
-            </div>
-        </div>
-        <div class="panel-body">
-            <div style="padding-bottom: 10px">
-              <b>  성별 : {{ users.gender }}</b>
-            </div>
-        </div>
-        <div class="panel-body">
-            <div style="padding-bottom: 10px">
-             <b>   생년월일 : {{ users.Year }}년 {{ users.Month }}월 {{ users.Day }}일 </b>
-         </div>
-    
-          <a href="/change" class="btn btn-lg btn-success">정보 변경</a>
+<input type="hidden" name="_csrf" value="{{ csrfToken }}" /> 
+        <table class="type10">
+        <thead>
+        <tr>
+            <th scope="cols">항목</th>
+            <th scope="cols">내 정보</th>
+        </tr>
+        </thead>
+
+        <tbody>
+    <tr>
+        <th scope="row">아이디</th>
+        <td><b>{{ users.username }}</b></td>
+    </tr>
+    <tr>
+        <th scope="row" class="even">이름</th>
+        <td class="even"><b>{{ users.displayname }}</b></td>
+    </tr>
+    <tr>
+        <th scope="row">이메일</th>
+        <td><b>{{ users.email }}</b></td>
+    </tr>
+    <tr>
+        <th scope="row" class="even">전화번호</th>
+        <td class="even"><b>{{ users.phone }}</b></td>
+    </tr>
+    <tr>
+        <th scope="row">성별</th>
+        <td><b>{{ users.gender }}</b></td>
+    </tr>
+    <tr>
+        <th scope="row" class="even">생년월일</th>
+        <td class="even"><b>{{ users.Year }}년 {{ users.Month }}월 {{ users.Day }}일</b></td>
+    </tr>
+    </tbody>
+</table>
+
+    <a href="/change" class="btn btn-lg btn-success">정보 변경</a>
           
        </form>           
 <!--

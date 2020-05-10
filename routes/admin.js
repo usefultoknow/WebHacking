@@ -32,12 +32,6 @@ var csrf = require('csurf'),
     csrfProtection = csrf({ cookie: true });
 
 
-//홈화면
-router.get('/',loginRequired, (req, res) => {
-    res.send('루트 경로 추후 설정 beer best');
-});
-
-
 
 //products 변수에 DB에 테이블을 findAll 해서 그것에 대한 내용을 담고 products.html에 데이터 전달
 //리스트
