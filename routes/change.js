@@ -34,6 +34,7 @@ router.post('/',loginRequired,async(req,res)=>{
                 },{
                 SET : {        
                         phone : req.body.phone,
+                        name : req.body.name,
                         gender : req.body.gender,
                         Year : req.body.Year,
                         Month : req.body.Month,

@@ -5,6 +5,7 @@
 {% block content -%}
 <form action="/change" method="post" enctype="multipart/form-data">
 <input type="hidden" name="_csrf" value="{{ csrfToken }}" /> 
+<div style="width:50%; height : 100%; border:none; float:left; max-width : 100%;">
         <table class="type10">
         <thead>
         <tr>
@@ -19,12 +20,16 @@
         <td><b>{{ users.username }}</b></td>
     </tr>
     <tr>
-        <th scope="row" class="even">이름</th>
+        <th scope="row" class="even">닉네임</th>
         <td class="even"><b>{{ users.displayname }}</b></td>
     </tr>
     <tr>
         <th scope="row">이메일</th>
         <td><b>{{ users.email }}</b></td>
+    </tr>
+    <tr>
+        <th scope="row">이름</th>
+        <td><b>{{ users.name }}</b></td>
     </tr>
     <tr>
         <th scope="row" class="even">전화번호</th>
@@ -38,12 +43,16 @@
         <th scope="row" class="even">생년월일</th>
         <td class="even"><b>{{ users.Year }}년 {{ users.Month }}월 {{ users.Day }}일</b></td>
     </tr>
-    </tbody>
-</table>
+        </tbody>
+    </table>
+    <a href="/change" class="btn btn-lg btn-success">정보 변경</a> <a href="https://www.kisa.or.kr/jsp/common/downloadAction.jsp?bno=259&dno=75&fseq=2">개인정보처리방침</a>
+ </div>
 
-    <a href="/change" class="btn btn-lg btn-success">정보 변경</a>
-          
-       </form>           
+ <div style="width:50%; height : 100%; border:none; float:left;"> 
+    <img src="../../img/personalP.png" style="max-width: 100%;">
+</div>
+  
+</form>           
 <!--
         </div>
     </div>

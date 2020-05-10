@@ -6,6 +6,14 @@ module.exports = function(sequelize, DataTypes){
             id: { type: DataTypes.BIGINT.UNSIGNED,
                  primaryKey: true, 
                  autoIncrement: true },
+            name : { 
+                type: DataTypes.STRING,
+                validate : {
+                    len : [0, 50]
+                },
+                allowNull : false,
+               
+            },    
             username : { 
                 type: DataTypes.STRING,
                 validate : {

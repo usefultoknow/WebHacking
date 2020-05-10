@@ -158,7 +158,7 @@ router.post('/join',async(req,res)=>{
         location.href="/accounts/join";</script>');
         }
         else if(Confirm2){      
-                res.send('<script>alert("동일한 이름이 있습니다.");\
+                res.send('<script>alert("동일한 닉네임이 있습니다.");\
                 location.href="/accounts/join";</script>');
         }
         else if(Confirm3){      

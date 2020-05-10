@@ -13,6 +13,9 @@
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                     <fieldset>
                         <div class="form-group">
+                            <input class="form-control"  placeholder="이름" name="name" type="text" value="{{users.name}}" required>
+                        </div>
+                        <div class="form-group">
                             <input class="form-control" id="phone" placeholder="핸드폰번호" name="phone" type="text" maxlength="13" value="{{users.phone}}" required>
                         </div>
                         <div class="form-group">
