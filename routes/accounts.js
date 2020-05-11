@@ -94,7 +94,8 @@ router.post('/login', function (req, res, next) {
         }
         req.login(user, function () {
             return req.session.save(function () {
-                return res.redirect('/');
+                return res.send('<script>alert("로그인 성공");\
+                location.href="/";</script>/');
             });
         });
     })(req, res, next)
@@ -121,7 +122,8 @@ router.get('/logout',async(req,res)=>{
     try{
     req.logout();
     req.session.save(()=>{
-        res.redirect('/accounts/login');
+        res.send('<script>alert("로그아웃 하셨습니다.");\
+        location.href="/accounts/login";</script>');
     });
     }
     catch(err){
