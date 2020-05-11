@@ -32,7 +32,7 @@
                             <input class="form-control" id="phone" placeholder="핸드폰번호" name="phone" type="text" maxlength="13" value="" required>
                         </div>
                         <div class="form-group">
-                            <input class="form-control" placeholder="이메일" name="email" type="text" value="" required>
+                            <input class="form-control" placeholder="이메일"  name="email" type="text" value="" required>
                             <font size=1>*회원가입 시 동일한 이메일은 허용되지 않고 유효하지 않은 이메일은 아이디 찾기 이용 시 불이익이 있습니다.*</font>
                         </div>
                         <div class="form-group">
@@ -82,10 +82,13 @@ $(document).ready(function() {
         var $passwordInput = $('#join_form input[name=password]');
         var $passwordInput2 = $('#join_form input[name=password2]');
 
+    
+
         if($passwordInput.val() !== $passwordInput2.val()){
             alert("패스워드와 확인용패스워드를 똑같이 입력해주세요.");
             return false;
         }
+
 
      function chkPwd($passwordInput){
 
@@ -111,7 +114,6 @@ $(document).ready(function() {
         }
 
 
-
         return true;
         }
 
@@ -120,6 +122,8 @@ $(document).ready(function() {
         $passwordInput.focus();
         return false;
         }
+
+
 
        
     });
@@ -139,6 +143,8 @@ $('#phone').keydown(function(event) {
  
     return (key == 8 || key == 9 || key == 46 || (key >= 48 && key <= 57) || (key >= 96 && key <= 105));          
 });
+
+
 
 
 </script>

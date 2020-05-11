@@ -4,9 +4,12 @@ const express = require('express'),
     loginRequired = require('../helpers/loginRequired'),
     paginate = require('express-paginate');
 
+    const Protection = require('../helpers/Protection');
 
 
-
+//db 시퀄라이저 연산 명령
+const sequelize = require('sequelize'),
+      Op = sequelize.Op;
 
 
 //이미지 저장되는 위치 설정
@@ -113,6 +116,10 @@ router.post('/products/write', upload.single('thumbnail'), csrfProtection,loginR
         req.body.writer = req.user.displayname;
 
         let Thumbnail =await (req.body.thumbnail = (req.file) ? req.file.filename : "");
+
+        req.body.name = Protection.cleanXss(req.body.name);
+        req.body.description = Protection.cleanXss(req.body.description);
+
         await models.Design.create({
             name : req.body.name,
             thumbnail : Thumbnail,
@@ -150,6 +157,9 @@ router.post('/products/write',csrfProtection,loginRequired,async(req,res)=>{
 router.post('/products/write',csrfProtection ,loginRequired, async (req, res) => {
 
     //유저를 가져온다음에 저장
+    req.body.name = Protection.cleanXss(req.body.name);
+    req.body.description = Protection.cleanXss(req.body.description);
+
     const user = await models.User.findByPk(req.user.id);
     await user.createDesign(req.body);
     res.redirect('/design/products');
@@ -178,6 +188,7 @@ router.post('/products/detail/:id',loginRequired, async (req, res) => {
     try {
 
         const product = await models.Design.findByPk(req.params.id);
+        req.body.content = Protection.cleanXss(req.body.content);
         // create + as에 적은 내용 ( Products.js association 에서 적은 내용 )
         await product.createSMemo({
             content : req.body.content,
@@ -303,6 +314,10 @@ router.post('/products/edit/:id/:id2', upload.single('thumbnail'),loginRequired 
         //파일 요청이면 파일명을 담고 아니면 이전 db에서 가져오기
         req.body.thumbnail = (req.file) ? req.file.filename : product.thumbnail;
         req.body.writer = req.user.displayname;
+
+        req.body.name = Protection.cleanXss(req.body.name);
+        req.body.description = Protection.cleanXss(req.body.description);
+
         await models.Design.update(
             req.body,
             {
@@ -361,18 +376,24 @@ router.get('/products/search',paginate.middleware(3, 50),loginRequired,csrfProte
          let Writer = "writer";
  
          if(req.query.choice == Name){
+             let namekeyword = req.query.search;
              const productsName = await models.Design.findAll({
-                 where : {
-                     name: req.query.search
-                 }
+                where : {
+                    name: {
+                        [Op.like] : '%' + namekeyword + '%'
+                    }
+                }
              });
              res.render('design/search.html', {productsName,pageCount,pages,products,csrfToken: req.csrfToken()} );
          }
          else if(req.query.choice == Writer){
+             let writerkeyword = req.query.search;
              const productsWriter = await models.Design.findAll({
-                 where : {
-                     writer: req.query.search
-                 }
+                where : {
+                    name: {
+                        [Op.like] : '%' + writerkeyword + '%'
+                    }
+                }
              });
              res.render('design/search.html',{productsWriter,pageCount,pages,products,csrfToken: req.csrfToken()} ); 
          }

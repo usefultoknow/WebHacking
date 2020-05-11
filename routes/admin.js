@@ -4,9 +4,12 @@ const express = require('express'),
     loginRequired = require('../helpers/loginRequired'),
     paginate = require('express-paginate');
 
+    const Protection = require('../helpers/Protection');
 
-
-
+//db 시퀄라이저 연산 명령
+const sequelize = require('sequelize'),
+      Op = sequelize.Op;
+    
 
 
 //이미지 저장되는 위치 설정
@@ -104,9 +107,14 @@ router.get('/products/write', csrfProtection,loginRequired, function (req, res) 
 router.post('/products/write', upload.single('thumbnail'), csrfProtection,loginRequired, async (req, res) => {
 
     try{
+
         req.body.writer = req.user.displayname;
 
         let Thumbnail =await (req.body.thumbnail = (req.file) ? req.file.filename : "");
+        
+        req.body.name = Protection.cleanXss(req.body.name);
+        req.body.description = Protection.cleanXss(req.body.description);
+
         await models.product.create({
             name : req.body.name,
             thumbnail : Thumbnail,
@@ -144,6 +152,9 @@ router.post('/products/write',csrfProtection,loginRequired,async(req,res)=>{
 router.post('/products/write',csrfProtection ,loginRequired, async (req, res) => {
 
     //유저를 가져온다음에 저장
+    req.body.name = Protection.cleanXss(req.body.name);
+    req.body.description = Protection.cleanXss(req.body.description);
+
     const user = await models.User.findByPk(req.user.id);
     await user.createProduct(req.body);
     res.redirect('/admin/products');
@@ -172,6 +183,7 @@ router.post('/products/detail/:id',loginRequired, async (req, res) => {
     try {
 
         const product = await models.product.findByPk(req.params.id);
+        req.body.content = Protection.cleanXss(req.body.content);
         // create + as에 적은 내용 ( Products.js association 에서 적은 내용 )
         await product.createMemo({
             content : req.body.content,
@@ -260,7 +272,7 @@ router.get('/products/Sucdelete/:id/:id2/:id3',loginRequired,async(req,res)=>{
 
 
 // 수정페이지 라우팅
-router.get('/products/edit/:id/:id2', upload.single('thumbnail'), loginRequired,async (req, res) => {
+router.get('/products/edit/:id/:id2', upload.single('thumbnail') ,loginRequired,async (req, res) => {
     try {
         if(req.user.id != req.params.id2){        
                 res.send('<script>alert("수정할 권한이 없습니다.");\
@@ -297,6 +309,10 @@ router.post('/products/edit/:id/:id2', upload.single('thumbnail'),loginRequired 
         //파일 요청이면 파일명을 담고 아니면 이전 db에서 가져오기
         req.body.thumbnail = (req.file) ? req.file.filename : product.thumbnail;
         req.body.writer = req.user.displayname;
+
+        req.body.name = Protection.cleanXss(req.body.name);
+        req.body.description = Protection.cleanXss(req.body.description);
+                 
         await models.product.update(
             req.body,
             {
@@ -353,21 +369,29 @@ router.get('/products/search',paginate.middleware(3, 50),loginRequired,csrfProte
          //검색기능
          let Name = "name";
          let Writer = "writer";
- 
+
+
          if(req.query.choice == Name){
+            let namekeyword = req.query.search;
              const productsName = await models.product.findAll({
                  where : {
-                     name: req.query.search
+                     name: {
+                         [Op.like] : '%' + namekeyword + '%'
+                     }
                  }
              });
              res.render('admin/search.html', {productsName,pageCount,pages,products,csrfToken: req.csrfToken()} );
          }
          else if(req.query.choice == Writer){
+            let writerkeyword = req.query.search;
              const productsWriter = await models.product.findAll({
                  where : {
-                     writer: req.query.search
+                     writer: {
+                         [Op.like] : '%' + writerkeyword + '%'
+                     }
                  }
              });
+
              res.render('admin/search.html',{productsWriter,pageCount,pages,products,csrfToken: req.csrfToken()} ); 
          }
          else{
