@@ -22,7 +22,8 @@ const express = require('express'),
       xssFilter = require('xss-filters'),
       dress = require('./routes/dress'),
       design = require('./routes/design'),
-      change = require('./routes/change');
+      change = require('./routes/change'),
+      withdraw = require('./routes/withdraw');
       
 
 const options = {
@@ -158,6 +159,8 @@ app.use('/missingid',missingid);
 //사용자 정보변경
 app.use('/change',change);
 
+//회원탈퇴
+app.use('/withdraw',withdraw);
 
 //sync() 메서드를 호출하여 models 폴더에서 정의된 모델들을 바탕으로 실제로 Model을 등록
 

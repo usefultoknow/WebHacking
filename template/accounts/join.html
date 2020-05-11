@@ -12,12 +12,13 @@
                 <form role="form" action="" id="join_form" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                     <fieldset>
+                    <div style="font-size : x-small;"><b>회원가입시 아이디와,닉네임,이메일은 고유한 값으로 하나밖에 존재하지 않습니다.</b></div>
                         <div class="form-group">
                             <input class="form-control" placeholder="ID" name="username" type="text" autofocus="true" required>
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="Password" name="password" type="password" value="" required>
-                            <font size=1>*password는 빈 공백없이 10자에서 20자 이내,숫자,문자,특수문자중 2가지 이상을 혼합해주세요.*</font>
+                            <div style="font-size : x-small;"><b>*password는 빈 공백없이 10자에서 20자 이내,숫자,문자,특수문자중 2가지 이상을 혼합해주세요.*</b></div>
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="Password 확인" name="password2" type="password" value="" required>
@@ -33,7 +34,7 @@
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="이메일"  name="email" type="text" value="" required>
-                            <font size=1>*회원가입 시 동일한 이메일은 허용되지 않고 유효하지 않은 이메일은 아이디 찾기 이용 시 불이익이 있습니다.*</font>
+                            <div style="font-size : x-small;"><b>*회원가입 시 동일한 이메일은 허용되지 않고 유효하지 않은 이메일은 아이디 찾기 이용 시 불이익이 있습니다.*</b></div>
                         </div>
                         <div class="form-group">
                         성별
