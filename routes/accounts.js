@@ -4,7 +4,8 @@ const express = require('express'),
       passport = require('passport'),
       LocalStrategy = require('passport-local').Strategy, //passport는 "어떤 로그인 방식을 취하냐"를 대명사로 strategy(전략)이라고 나타낸다.
       passwordHash = require('../helpers/passwordHash'),
-      loginRequired = require('../helpers/loginRequired');
+      loginRequired = require('../helpers/loginRequired'),
+      logoutRequired = require('../helpers/logoutRequired');
 
       var csrf = require('csurf'),
       csrfProtection = csrf({ cookie: true });
@@ -56,17 +57,8 @@ passport.deserializeUser(  (user, done) => {
 
 
 
-//기본페이지
-router.get('/',(_,res)=>{
-    res.send('account app');
-})
-
-
-
-
-
 //회원가입 페이지
-router.get('/join',(_,res)=>{
+router.get('/join',logoutRequired,(_,res)=>{
     res.render('accounts/join.html');
 });
 
@@ -76,7 +68,7 @@ router.get('/join',(_,res)=>{
 
 
 //로그인 페이지
-router.get('/login', ( req , res) => {
+router.get('/login',logoutRequired ,( req , res) => {
     res.render('accounts/login.html', { flashMessage : req.flash().error } );
 });
 
@@ -95,7 +87,7 @@ router.post('/login', function (req, res, next) {
         req.login(user, function () {
             return req.session.save(function () {
                 return res.send('<script>alert("로그인 성공");\
-                location.href="/";</script>/');
+                location.href="/home";</script>/');
             });
         });
     })(req, res, next)

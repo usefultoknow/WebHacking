@@ -65,6 +65,8 @@ app.use(logger('combined',{stream:fs.WriteStream('./serverlog.log')}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use('/css',express.static('css'));
+app.use('/js',express.static('js'));
 app.use('/img',express.static('img'));
 app.use('/uploads', express.static('uploads'));
 app.locals.req_path = request.path;
@@ -81,7 +83,7 @@ const sessionMiddleWare = session({
     resave: false,
     saveUninitialized: true,
     cookie: {
-      maxAge: 2000 * 60 * 60 //지속시간 2시간
+      maxAge: 1000 * 30 * 10 //지속시간 2시간
     },
     store: new SequelizeStore({
         db: db.sequelize

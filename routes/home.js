@@ -1,12 +1,24 @@
 const express = require('express'),
       router = express.Router(),
       models = require('../models'),
-      loginRequired = require('../helpers/loginRequired');
+      loginRequired = require('../helpers/loginRequired'),
+      logoutRequired = require('../helpers/logoutRequired');
       
 
 
+router.get('/',logoutRequired,async(_,res)=>{
+    try{
+        res.render('introduce/introduce.html');
+    }
+    catch(err){
+        console.log(err);
+    }
 
-router.get('/',loginRequired,async(req,res)=>{
+});
+
+
+
+router.get('/home',loginRequired,async(req,res)=>{
     try{
 
         const Dress = await models.Dress.findAll({

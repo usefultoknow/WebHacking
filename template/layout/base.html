@@ -18,11 +18,16 @@
         *{
             font-family:JejuGothic;
             font-size:100%;
+            
         }
+
             #banner { 
                 display: block; 
                 margin : 0px auto;
             }
+
+        
+        
             
             @media(max-width : 900px){
                 #banner {
@@ -93,15 +98,20 @@
                             <span class="icon-bar"></span> 
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
+                            
 
-                        </button> 
-                        <a href="/" class="navbar-brand">Konyang 중고장터</a>
+                        </button>
+                          {% if isLogin %}
+                            <div class="navbar-brand">Welcome KY</div>  
+                          {% else %}
+                        <a href="/" class="navbar-brand"><img src='/img/logo.png'>To Banner page</img></a>   
+                            {% endif %} 
                     </div> 
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
                         <ul class="nav navbar-nav">
                             {% from "macro/link.html" import link %}
                             {% if isLogin %}
-                            {{ link( '/' , "Home" , req_path ) }}
+                            {{ link( '/home' , "Home" , req_path ) }}
                             {{ link( '/admin/products' , "자유 게시판" , req_path ) }}
                             {{ link( '/dress/products' , "의류/악세사리 게시판" , req_path ) }}
                             {{ link( '/design/products' , "가구/생활용품 게시판" , req_path ) }}

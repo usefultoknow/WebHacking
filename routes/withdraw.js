@@ -22,7 +22,7 @@ const express = require('express'),
                     id : req.user.id
                 }
         });
-        console.log('####################################',user);
+       
            //보안상 문제로 어떤 정보가 일치하지 않는지 알려주지 않음
             if((user.username == req.body.username) && (user.displayname == req.body.displayname) && (user.email == req.body.email) ){
             await models.User.destroy({
