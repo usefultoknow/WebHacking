@@ -36,6 +36,7 @@
                     max-height : 100px;
                 }
             }
+            
        
             table.type10 {
                 border-collapse: collapse;
@@ -104,23 +105,40 @@
                           {% if isLogin %}
                             <div class="navbar-brand">Welcome KY</div>  
                           {% else %}
-                        <a href="/" class="navbar-brand"><img src='/img/logo.png'>To Banner page</img></a>   
-                            {% endif %} 
+                            <a href="/" class="navbar-brand"><img id="logo" src="/img/logo.png" style="display:block; height:100%; width:80%;"></img></a>
+                          {% endif %} 
                     </div> 
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
                         <ul class="nav navbar-nav">
                             {% from "macro/link.html" import link %}
                             {% if isLogin %}
-                            {{ link( '/home' , "Home" , req_path ) }}
-                            {{ link( '/admin/products' , "자유 게시판" , req_path ) }}
-                            {{ link( '/dress/products' , "의류/악세사리 게시판" , req_path ) }}
-                            {{ link( '/design/products' , "가구/생활용품 게시판" , req_path ) }}
-                            {{ link( '/chat' , "채팅" , req_path ) }}
-                            {{ link( '/accounts/information' , "내 정보" , req_path ) }}
-                             <li><a href="/accounts/logout" onclick="return confirm('로그아웃 하시겠습니까?')">LOGOUT</a></li>
+                              <li class="nav-item">
+                                <a class="nav-link" href="/home">Home</a>
+                              </li>
+                              <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">게시판</a>
+                                   <div class="dropdown-menu">
+                                       <a class="dropdown-item" href="/admin/products">자유 게시판</a>
+                                       <a class="dropdown-item" href="/dress/products">의류/악세사리 게시판</a>
+                                       <a class="dropdown-item" href="/design/products">가구/생활용품 게시판</a>
+                                    </div>   
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" href="/chat">Chating</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" href="/accounts/information">내 정보</a>
+                              </li>
+                              <li>
+                              <a href="/accounts/logout" onclick="return confirm('로그아웃 하시겠습니까?')">LOGOUT</a>
+                              </li>                           
                             {% else %}
-                            {{ link( '/accounts/join' , "회원가입" , req_path ) }}
-                            {{ link( '/accounts/login' , "로그인" , req_path ) }}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/accounts/join">회원가입</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" href="/accounts/login">로그인</a>
+                              </li>               
                             {% endif %}
                         </ul> 
                     </div> 
