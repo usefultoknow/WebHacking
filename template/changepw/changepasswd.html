@@ -9,26 +9,24 @@
                 <h3 class="panel-title">패스워드 변경</h3>
             </div>
             <div class="panel-body">
-                <form role="form" action="" id="join_form"  method="post">
+                <form role="form" action="" id="join_form" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                     <fieldset>
-                    <div class="form-group">
-                            <input class="form-control" placeholder="패스워드 변경을 희망하는 ID" name="username" type="text" autofocus="true" required>
-                        </div>
-                       <div class="form-group">
-                            <input class="form-control" placeholder="변경 할 Password" name="password" type="password" value="" required>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="변경을 희망하는 Password 입력" name="password" type="password" autofocus="true" required>
                         </div>
                         <div class="form-group">
-                            <input class="form-control" placeholder="변경 할 Password 확인" name="password2" type="password" value="" required>
-                        </div>
+                            <input class="form-control" placeholder="Password 확인" name="password2" type="password" value="" required>
+                        </div>             
                         <!-- Change this to a button or input when using this as a form -->
-                        <input type="submit" class="btn btn-lg btn-success btn-block" value="인증하기">
+                        <input type="submit" class="btn btn-lg btn-success btn-block" value="변경하기">
                     </fieldset>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 <script type="text/javascript">
 $(document).ready(function() {
     $('#join_form').submit(function(){
@@ -83,4 +81,6 @@ $(document).ready(function() {
     });
 });
 </script>
+
+
 {% endblock %}

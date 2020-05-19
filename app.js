@@ -23,7 +23,8 @@ const express = require('express'),
       dress = require('./routes/dress'),
       design = require('./routes/design'),
       change = require('./routes/change'),
-      withdraw = require('./routes/withdraw');
+      withdraw = require('./routes/withdraw'),
+      changepasswd = require('./routes/changepasswd');
       
 
 const options = {
@@ -160,6 +161,9 @@ app.use('/missingid',missingid);
 
 //사용자 정보변경
 app.use('/change',change);
+
+//패스워드 찾기
+app.use('/changepasswd',changepasswd);
 
 //회원탈퇴
 app.use('/withdraw',withdraw);

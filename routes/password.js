@@ -64,22 +64,22 @@ router.get('/password/change',csrfProtection,async(req,res)=>{
 
 router.post('/password/change',async(req,res)=>{
     try{
-        
         const ConfirmId = req.body.username;
         const Password = passwordHash(req.body.password);
-        await models.User.update(Password,{
+        await models.User.update({
+            password :Password
+        },{
             where : {
                 username : ConfirmId
             }
-        },{SET : {
-            password :Password
-        }});
+        });
     }
     catch(err){
         console.log(err);
     }
 
-    res.redirect('/accounts/login');
+    res.send('<script>alert("패스워드 변경완료");\
+            location.href="/accounts/login";</script>');
 });
 
 
