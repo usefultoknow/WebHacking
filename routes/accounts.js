@@ -5,7 +5,8 @@ const express = require('express'),
       LocalStrategy = require('passport-local').Strategy, //passport는 "어떤 로그인 방식을 취하냐"를 대명사로 strategy(전략)이라고 나타낸다.
       passwordHash = require('../helpers/passwordHash'),
       loginRequired = require('../helpers/loginRequired'),
-      logoutRequired = require('../helpers/logoutRequired');
+      logoutRequired = require('../helpers/logoutRequired'),
+      Protection = require('../helpers/Protection');
 
       var csrf = require('csurf'),
       csrfProtection = csrf({ cookie: true });
@@ -160,6 +161,10 @@ router.post('/join',async(req,res)=>{
             location.href="/accounts/join";</script>');
     }
         else{
+        req.body.username = Protection.cleanXss(req.body.username);
+        req.body.displayname = Protection.cleanXss(req.body.displayname);
+        req.body.email = Protection.cleanXss(req.body.email);
+
         await models.User.create(req.body);     
         res.send('<script>alert("회원가입 성공");\location.href="/accounts/login";</script>');
         }
