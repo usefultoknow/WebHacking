@@ -162,10 +162,16 @@ router.post('/join',async(req,res)=>{
     }
         else{ 
         
+        //정규표현식을 통한 유효성 검사
         req.body.username = Protection.checkCID(req.body.username,res);
         req.body.displayname = Protection.checkNickName(req.body.displayname,res);
         req.body.email = Protection.checkEmail(req.body.email,res);
-        req.body.password = Protection.checkPassword(req.body.password, req.body.password2, res)
+        req.body.password = Protection.checkPassword(req.body.password, req.body.password2, res);
+
+        //혹시 모를 xss 공격에 대한 방어
+        req.body.username = Protection.cleanXss(req.body.username);
+        req.body.displayname = Protection.cleanXss(req.body.displayname);
+        req.body.email = Protection.cleanXss(req.body.email);
             
 
         await models.User.create(req.body);     

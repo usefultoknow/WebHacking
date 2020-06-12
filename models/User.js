@@ -22,6 +22,14 @@ module.exports = function(sequelize, DataTypes){
                 allowNull : false,
                
             },
+            confirmvalue : { 
+                type: DataTypes.STRING,
+                validate : {
+                    len : [0, 50]
+                },
+                allowNull : true,
+               
+            },
             email : { 
                 type: DataTypes.STRING,
                 validate : {

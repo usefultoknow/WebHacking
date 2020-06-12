@@ -33,7 +33,15 @@ const express = require('express'),
 
 
             if(confirmpasswd == identificationPasswd.password)
-            {
+            {   
+                const defalutvalue =  "true";
+                await models.User.update({
+                    confirmvalue : defalutvalue 
+                },{
+                    where : {
+                        id : req.user.id
+                    }
+                });
                
                      res.send('<script>alert("인증 성공");\
                      location.href="/changepasswd/change";</script>');         
@@ -55,7 +63,30 @@ const express = require('express'),
       //변경요청
       router.get('/change',loginRequired,csrfProtection,async(req,res)=>{
         try{
+            const authentication = await models.User.findOne({
+                where : {
+                    id : req.user.id
+                }
+            });
+
+            if(authentication.confirmvalue == null)
+            {
+            return res.send('<script>alert("유효하지 않은 접근입니다.");\
+                             location.href="/changepasswd";</script>');
+            }
+            else
+            {
+                const defalutvalue =  null;
+                await models.User.update({
+                    confirmvalue : defalutvalue 
+                },{
+                    where : {
+                        id : req.user.id
+                    }
+                });
+
             res.render('changepw/changepasswd.html',{csrfToken : req.csrfToken()});
+            }
 
         }
         catch(err){
