@@ -118,6 +118,15 @@ router.post('/products/write', upload.single('thumbnail'), csrfProtection,loginR
 
         let Thumbnail =await (req.body.thumbnail = (req.file) ? req.file.filename : "");
 
+       
+        let extName = path.extname(Thumbnail);
+
+        if(extName != 'gif' || extName != '.png' || extName != 'jpg' || extName != 'jpeg')
+        {
+            return res.send('<script>alert("gif,png,jpg,jpeg 파일만 업로드 할수 있습니다.");\
+            location.href="/dress/products/write";</script>');
+        }
+
         req.body.name = Protection.cleanXss(req.body.name);
         req.body.description = Protection.cleanXss(req.body.description);
 
@@ -223,6 +232,11 @@ router.post('/products/detail/:id',loginRequired, async (req, res) => {
 router.get('/products/detail/:id',loginRequired,csrfProtection, async (req, res) => {
     try {
         const product = await models.Dress.findByPk(req.params.id);
+        if(!product)
+        {
+         return res.send('<script>alert("없는 페이지 입니다.");\
+                  location.href="/dress/products";</script>');
+        }
         try {        
             const product1 = await models.Dress.findOne({
                 where: {

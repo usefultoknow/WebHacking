@@ -12,16 +12,18 @@
                 <form role="form" action="" id="join_form" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                     <fieldset>
-                    <div style="font-size : x-small;"><b>*아이디,닉네임,이메일은 고유한 값으로 하나밖에 존재하지 않습니다.*</b></div>
+                   <!-- <div style="font-size : x-small;"><b>*아이디,닉네임,이메일은 고유한 값으로 하나밖에 존재하지 않습니다.*</b></div> -->
                         <div class="form-group">
-                            <input class="form-control" placeholder="아이디를 입력하세요" name="username" type="text" autofocus="true" required>
+                            <input class="form-control" placeholder="패스워드를 입력하세요" name="password" type="password" autofocus="true" required>
                         </div>
+                        <!--
                         <div class="form-group">
                             <input class="form-control" placeholder="닉네임을 입력하세요" name="displayname" type="text" autofocus="true" required>
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="이메일을 입력하세요" name="email" type="text" autofocus="true" required>
-                        </div>             
+                        </div>
+                        -->             
                         <!-- Change this to a button or input when using this as a form -->
                         <input type="submit" class="btn btn-lg btn-danger btn-block" value="탈퇴하기">
                     </fieldset>

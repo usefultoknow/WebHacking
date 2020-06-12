@@ -3,7 +3,8 @@ const express = require('express'),
       models = require('../models'),
       loginRequired = require('../helpers/loginRequired'),
       csrf = require('csurf'),
-      csrfProtection = csrf({ cookie: true });
+      csrfProtection = csrf({ cookie: true }),
+      PasswordHash = require('../helpers/passwordHash');
 
       const Protection = require('../helpers/Protection');
 
@@ -23,8 +24,9 @@ const express = require('express'),
                 }
         });
        
+        let Confirmpasword = PasswordHash(req.body.password);
            //보안상 문제로 어떤 정보가 일치하지 않는지 알려주지 않음
-            if((user.username == req.body.username) && (user.displayname == req.body.displayname) && (user.email == req.body.email) ){
+            if(user.password == Confirmpasword ){
             await models.User.destroy({
                 where : {
                    id : req.user.id

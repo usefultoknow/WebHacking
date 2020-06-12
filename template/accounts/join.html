@@ -18,7 +18,7 @@
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="Password" name="password" type="password" value="" required>
-                            <div style="font-size : x-small;"><b>*password는 빈 공백없이 10자에서 20자 이내,숫자,문자,특수문자중 2가지 이상을 혼합해주세요.*</b></div>
+                            <div style="font-size : x-small;"><b>*password는 빈 공백없이 8자에서 20자 이내,숫자,대소문자,특수문자를 혼합해주세요.*</b></div>
                         </div>
                         <div class="form-group">
                             <input class="form-control" placeholder="Password 확인" name="password2" type="password" value="" required>
@@ -76,7 +76,9 @@
         </div>
     </div>
 </div>
+
 <script type="text/javascript">
+/*
 $(document).ready(function() {
     $('#join_form').submit(function(){
 
@@ -129,7 +131,7 @@ $(document).ready(function() {
        
     });
 });
-
+*/
 $('#phone').keydown(function(event) {
     var key = event.charCode || event.keyCode || 0;
     $text = $(this);

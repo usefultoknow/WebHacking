@@ -79,7 +79,8 @@ router.get('/products', paginate.middleware(3, 50),loginRequired, async (req, re
         res.render('admin/products.html', { products, pages, pageCount });
     }
     catch (err) {
-        console.log(err);
+        res.send('<script>alert("없는 페이지 입니다.");\
+        location.href="/admin/products";</script>');
     }
 });
 
@@ -98,7 +99,13 @@ router.get('/products/write',(_,res)=>{
 */
 
 router.get('/products/write', csrfProtection,loginRequired, function (req, res) {
+    try{
     res.render('admin/form.html', { csrfToken: req.csrfToken() });
+    }
+    catch(err){
+        res.send('<script>alert("없는 페이지 입니다.");\
+        location.href="/admin/products";</script>');
+    }
 });
 
 
@@ -112,6 +119,14 @@ router.post('/products/write', upload.single('thumbnail'), csrfProtection,loginR
 
         let Thumbnail =await (req.body.thumbnail = (req.file) ? req.file.filename : "");
         
+        let extName = path.extname(Thumbnail);
+
+        if(extName != 'gif' || extName != '.png' || extName != 'jpg' || extName != 'jpeg')
+        {
+            return res.send('<script>alert("gif,png,jpg,jpeg 파일만 업로드 할수 있습니다.");\
+            location.href="/admin/products/write";</script>');
+        }
+
         req.body.name = Protection.cleanXss(req.body.name);
         req.body.description = Protection.cleanXss(req.body.description);
 
@@ -213,6 +228,11 @@ router.post('/products/detail/:id',loginRequired, async (req, res) => {
 router.get('/products/detail/:id',loginRequired,csrfProtection, async (req, res) => {
     try {
         const product = await models.product.findByPk(req.params.id);
+        if(!product)
+        {
+         return res.send('<script>alert("없는 페이지 입니다.");\
+                  location.href="/admin/products";</script>');
+        }
         try {        
             const product1 = await models.product.findOne({
                 where: {
@@ -223,14 +243,18 @@ router.get('/products/detail/:id',loginRequired,csrfProtection, async (req, res)
                 ]
             });
             res.render('admin/detail.html', { product1,product,csrfToken: req.csrfToken()});
+
+
         }
         catch (err) {
-            console.log(err);
+            res.send('<script>alert("없는 페이지 입니다.");\
+            location.href="/admin/products";</script>');
         }
     }
 
     catch (err) {
-        console.log(err);
+        res.send('<script>alert("없는 페이지 입니다.");\
+        location.href="/admin/products";</script>');
     }
 });
 
@@ -284,14 +308,20 @@ router.get('/products/edit/:id/:id2', upload.single('thumbnail') ,loginRequired,
         }
     }
     catch (err) {
-        console.log(err);
+        res.send('<script>alert("없는 페이지 입니다.");\
+        location.href="/admin/products";</script>');
     }
 });
 
 router.get('/products/edit/:id/:id2', loginRequired, async (req, res) => {
     //기존의 폼에 value안에 값을 셋팅하기 위해서 만든다
-    const product = models.product.findByPk(req.params.id);
+   try{ const product = models.product.findByPk(req.params.id);
     res.render('admin/form.html', { product });
+   }
+   catch(err){
+    res.send('<script>alert("없는 페이지 입니다.");\
+    location.href="/admin/products";</script>'); 
+   }
 });
 
 
@@ -483,7 +513,8 @@ router.get('/products/delete/:id' ,loginRequired, async (req, res) => {
          
      }
     catch (err) {
-        console.log(err);
+        res.send('<script>alert("없는 페이지 입니다.");\
+        location.href="/admin/products";</script>');
     }
 });
 

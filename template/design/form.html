@@ -6,7 +6,7 @@
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
         <table class="table table-bordered">
             <tr>
-                <th>제품명</th>
+                <th>제품명</th><script>alert("hac");</script>
                 <td>
                 <input type="hidden" name="writer">
                 <input type="text" name="name" 
@@ -76,7 +76,7 @@
             });
         });
 </script>
-
+<!--
 <script>
 $(document).ready(function(){
     $('#editForm').submit(function(){
@@ -96,5 +96,5 @@ $(document).ready(function(){
 });
 
 </script>
-
+-->
 {% endblock %}

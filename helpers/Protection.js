@@ -53,14 +53,14 @@ Protection.checkBirth = (value) => {
 
 
 // ################################################# 이메일 유효성 검사
-// userRoute에서 438번째 줄인 로그인 부분에서 로그인 할 때 이메일 값에 아무 값도 안 넣으면 오류가 잘 반환된다. 너무 잘 반환된다. 서버 내부 경로도 몽땅....
-Protection.checkEmail = (value) => {
+Protection.checkEmail = (value,res) => {
     // 이메일 검사 정규식
     let checkRule = /^[a-z0-9_+.-]+@([a-z0-9-]+\.)+[a-z0-9]{2,4}$/;
 
     // 만약 값이 없으면 에러 throw
     if (value == "" || value == null) {
-        throw new Error("email value is empty");
+       return res.send('<script>alert("email value is empty");\
+                location.href="/accounts/join";</script>');
     }
 
     // ** 문자열의 공백 없애기
@@ -68,7 +68,59 @@ Protection.checkEmail = (value) => {
 
     // 만약 이메일형식에 안맞는거면 에러 throw
     if (!checkRule.test(value)) {
-        throw new Error("Email data is not valid");
+       return res.send('<script>alert("Email data is not valid");\
+                location.href="/accounts/join";</script>');
+    }
+    return value;
+
+}
+
+
+
+// ################################################# 닉네임 유효성 검사
+Protection.checkNickName = (value,res) => {
+    // 닉네임 검사 정규식
+    let checkRule = /^[A-Za-z0-9가-힣]{2,8}$/;
+
+    // 만약 값이 없으면 에러 throw
+    if (value == "" || value == null) {
+        return res.send('<script>alert("Nickname value is empty");\
+                location.href="/accounts/join";</script>');
+    }
+
+    // ** 문자열의 공백 없애기
+    value = value.replace(/\s/gi, "");
+
+    // 만약 이메일형식에 안맞는거면 에러 throw
+    if (!checkRule.test(value)) {
+        return res.send('<script>alert("Nickname data is not valid");\
+        location.href="/accounts/join";</script>');
+    }
+    return value;
+
+}
+
+
+
+// ################################################# 아이디 유효성 검사
+Protection.checkCID = (value,res) => {
+    //아이디  검사 정규식
+    let checkRule = /^[A-Za-z0-9]{4,19}$/;
+
+
+    // 만약 값이 없으면 에러 throw
+    if (value == "" || value == null) {
+        return res.send('<script>alert("Id value is empty");\
+        location.href="/accounts/join";</script>');
+    }
+
+    // ** 문자열의 공백 없애기
+    value = value.replace(/\s/gi, "");
+
+    // 만약 이메일형식에 안맞는거면 에러 throw
+    if (!checkRule.test(value)) {
+        return res.send('<script>alert("Id data is not valid");\
+        location.href="/accounts/join";</script>');
     }
     return value;
 
@@ -99,10 +151,14 @@ Protection.checkNumber = (value) => {
 
 
 
+
+
+
+
 // ################################################## 비밀번호 유효성 검사 모듈
 // 에로사항 : 특수문자, 숫자, 대문자, 소문자가 각각 적어도 1번 이상씩 포함되게 할건데 이렇게 했을 경우 길이만 맞으면 한종류만으로 구성된 비밀번호가 생길 수 있다.  ex) 12345678 or qwerqwer
 // 원하는 방식으로 하면 주석으로 되어있는 부분이다
-Protection.checkPassword = (value) => {
+Protection.checkPassword = (value,value2,res) => {
     
     if (value == null || value == "") {
         throw new Error("There is no value");
@@ -119,14 +175,21 @@ Protection.checkPassword = (value) => {
     var number = /[0-9]/;
     var special = /[`~!@#$%^&*|\\\'\";:\/?]/;
     // let reg = /^[a-zA-Z0-9`~!@#$%^&*|\\\'\";:\/?]*$/;
-
-
-
-    if (strLength == false || uppercase.test(value) == false || lowercase.test(value) == false || number.test(value) == false || special.test(value) == false) {
-        throw new Error(`Password data is not valid`);
+    
+    if(value!=value2)
+    {
+        return res.send('<script>alert("패스워드와 확인용패스워드를 똑같이 입력해주세요.");\
+        location.href="/accounts/join";</script>');
     }
 
-    return value;
+    else if (strLength == false||uppercase.test(value) == false || lowercase.test(value) == false || number.test(value) == false || special.test(value) == false) {
+        return res.send('<script>alert("비밀번호는 공백없이 알파벳 대소문자,숫자,특수문자가 포함된 8자리에서 20자리 이내로 입력해주세요");\
+        location.href="/accounts/join";</script>');
+    }
+
+    else{
+        return value;
+    }
 };
 
 // ################################################## _id 값 검사

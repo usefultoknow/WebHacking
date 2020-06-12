@@ -160,10 +160,13 @@ router.post('/join',async(req,res)=>{
             res.send('<script>alert("동일한 이메일이 있습니다.");\
             location.href="/accounts/join";</script>');
     }
-        else{
-        req.body.username = Protection.cleanXss(req.body.username);
-        req.body.displayname = Protection.cleanXss(req.body.displayname);
-        req.body.email = Protection.cleanXss(req.body.email);
+        else{ 
+        
+        req.body.username = Protection.checkCID(req.body.username,res);
+        req.body.displayname = Protection.checkNickName(req.body.displayname,res);
+        req.body.email = Protection.checkEmail(req.body.email,res);
+        req.body.password = Protection.checkPassword(req.body.password, req.body.password2, res)
+            
 
         await models.User.create(req.body);     
         res.send('<script>alert("회원가입 성공");\location.href="/accounts/login";</script>');
